@@ -24,7 +24,7 @@ public class sethost extends NotConnectedClientCommand {
 				System.out.println("Must be disconnected from server to change host");
 		}
 		catch(Exception ex) {
-			getClient().client`UI().display("Failed to set host");
+			getClient().clientUI().display("Failed to set host");
 		}
 
 	}

@@ -3,7 +3,7 @@ package SimpleChatServer;
 import java.io.IOException;
 
 public class start extends ServerNotConnectedCommand{
-	
+	// TODO move messages to serverStarted
 	public start(String str, EchoServer1 server){
 		super(str, server);
 	}//end start
@@ -16,12 +16,11 @@ public class start extends ServerNotConnectedCommand{
 			getServer().handleMessageFromUser("Server has started listening.");
 			getServer().getConsole().display("Server listening for connections on port " + getServer().getPort());
 		}
-		catch(IOException ex)
+		catch(IOException e)
 		{
 			getServer().getConsole().display("IOException while starting server.");
 			return;
 		}//end try-catch block
-		
 		
 	}//end doCmb()
 	

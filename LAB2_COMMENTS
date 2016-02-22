@@ -1,0 +1,33 @@
+# LAB2_COMMENTS
+
+TODO:
+Client
+Spec says connectionClosed should shut down client. Reasonable to not do this, since client could try to connect to a different server.
+
+jetport, get host, seaport are good
+
+-2 in setHost, no need for doCommand!
+
+-3 logoff: no need for ServerLogoffHandler - this can be done in server-side clientDisconnected method.  Why get host in catch clause??
+
+
+Server
+-5 closed attribute and all the methods using it should not be You have isListening in AbstractServer and this should be used for most of this.
+
+-3 in HandleMessage - no check needed and no message “server is closed”
+-3 Server should have ChatIF, not ServerConsole, so a GUI could be added later
+
+serverStopped is only for appropriate messages - it is called when stopListening happens, so should not call stopListening
+
+No need for EchoServer main - it is started by the ServerConsole
+-3 ServerConsole should pass itself to the EchoServer constructor, which should take a ChatIF parameter
+
+getport, seaport good
+
+-3 ServerNotConnectedCommand should check no clients and not isListening
+
+-3 start and stop should not have messages, these should be in serverStarted and serverStopped hook methods. Use isListening, not closed
+
+-3 close and quit  must stop listening and close port, using server close method.
+
+-9 did no override AbstractServer methods clientConnected, clientDisconnected and clientException as indicated in E49.
