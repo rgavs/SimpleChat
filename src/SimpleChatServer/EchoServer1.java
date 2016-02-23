@@ -25,7 +25,7 @@ public class EchoServer1 extends AbstractServer
 {
   //Class variables *************************************************
 	private boolean closed; 
-	private ServerConsole myconsole;
+	private ChatIF myServerUI;
   /**
    * The default port to listen on.
    */
@@ -39,10 +39,15 @@ public class EchoServer1 extends AbstractServer
    *
    * @param port The port number to connect on.
    */
-  public EchoServer1(int port)
+  public EchoServer1(int port, ChatIF serverUI)
   {
     super(port);
+    myServerUI = serverUI;
     closed = false;
+  }
+  
+  public ChatIF serverUI() {
+  	return myServerUI;
   }
 
   //Instance methods ************************************************
@@ -79,7 +84,7 @@ public class EchoServer1 extends AbstractServer
 	    }
 	  }
 	  else
-		  getConsole().display("Connnection has closed. Unable to send messages.");
+		  serverUI().display("Connnection has closed. Unable to send messages.");
 	  
   }//end handleMessageFromUser
   
@@ -105,22 +110,11 @@ public class EchoServer1 extends AbstractServer
 	    }
 	    catch(Exception ex)
 	    {
-	      getConsole().display("\nNo such command " + commandStr + "\nNo action taken.");
+	      serverUI().display("\nNo such command " + commandStr + "\nNo action taken.");
 	    }
 	  
   }//end createAndDoCommand
 
-  public void setConsole(ServerConsole c){
-	  myconsole = c;
-	  
-  }//end setConsole()
-  
-  public ServerConsole getConsole(){
-	  
-	  return myconsole;
-	  
-  }//end getConsole()
-  
   /**
    * This method overrides the one in the superclass.  Called
    * when the server starts listening for connections.
@@ -128,7 +122,7 @@ public class EchoServer1 extends AbstractServer
   protected void serverStarted()
   {
       closed = false;
-	  System.out.println("Server listening for connections on port " + getPort());
+      serverUI().display("Server listening for connections on port " + getPort());
   }
 
   /**
@@ -139,7 +133,7 @@ public class EchoServer1 extends AbstractServer
   {
 	  this.stopListening();
 	  closed = true;
-	  System.out.println("Server has stopped listening for connections.");
+	  serverUI().display("Server has stopped listening for connections.");
   }
   
   protected Boolean isClosed() {
@@ -177,7 +171,7 @@ public class EchoServer1 extends AbstractServer
       port = DEFAULT_PORT; //Set port to 5555
     }
 
-    EchoServer1 sv = new EchoServer1(port);
+    EchoServer1 sv = new EchoServer1(port, this);
 
     try
     {
