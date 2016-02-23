@@ -137,7 +137,7 @@ public class EchoServer1 extends AbstractServer
    */
   protected void serverStopped()
   {
-	  this.stopListening();
+	  //this.stopListening();
 	  closed = true;
 	  serverUI().display("Server has stopped listening for connections.");
   }
