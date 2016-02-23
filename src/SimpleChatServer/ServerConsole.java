@@ -10,19 +10,15 @@ public class ServerConsole implements ChatIF{
 	final public static int DEFAULT_PORT = 5555;
 	
 	// The instance of the server that is connected to this console
-	private EchoServer1 server;
+	EchoServer1 server;
 	
 	public ServerConsole(String host, int port){
-			server = new EchoServer1(port);	
-			
-			try{
-				server.setConsole(this);
-				server.listen();
-			}
-			catch(Exception ex){
-				System.out.println("ERROR - Could not listen for clients!");
-			}
-		
+		try{
+			server = new EchoServer1(port, this);	
+		}
+		catch(IOException e){
+			System.out.println("Error: Can't listen to clients.");
+		}
 	}//end ServerConsole()
 	
 	public void accept(){
@@ -56,8 +52,24 @@ public class ServerConsole implements ChatIF{
 	
 	public static void main(String[] args)
 	  {
-		String host = "";
+	    String host = "";
 	    int port = 0;  //The port number
+	    
+	    try
+	    {
+	      port = Integer.parseInt(args[0]); //Get port from command line
+	    }
+	    catch(Throwable t)
+	    {
+	      port = DEFAULT_PORT; //Set port to 5555
+	    }
+	    
+	    try {
+			host = args[1];
+		}
+		catch(Throwable t){
+			host = "localhost";
+		}
 
 	    ServerConsole sconsole = new ServerConsole(host, DEFAULT_PORT);
 	    sconsole.accept();  //Wait for console data
