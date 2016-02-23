@@ -125,6 +125,7 @@ public class EchoServer1 extends AbstractServer
   {
       closed = false;
       serverUI().display("Server listening for connections on port " + getPort());
+      sendToAllClients("SERVER MSG> Server has started listening.");
   }
 
   /**
@@ -136,6 +137,7 @@ public class EchoServer1 extends AbstractServer
 	  //this.stopListening();
 	  closed = true;
 	  serverUI().display("Server has stopped listening for connections.");
+	  sendToAllClients("SERVER MSG> Server has stopped listening.");
   }
   
   protected Boolean isClosed() {
