@@ -44,6 +44,12 @@ public class EchoServer1 extends AbstractServer
     super(port);
     myServerUI = serverUI;
     closed = false;
+    try {
+    	listen();
+    }
+    catch(IOException e) {
+    	serverUI().display("ERROR - Could not listen for clients!");
+    }
   }
   
   public ChatIF serverUI() {
@@ -157,31 +163,6 @@ public class EchoServer1 extends AbstractServer
 	  closed = status;
   }//end setStatus
   
-  
-  public static void main(String[] args)
-  {
-    int port = 0; //Port to listen on
-
-    try
-    {
-      port = Integer.parseInt(args[0]); //Get port from command line
-    }
-    catch(Throwable t)
-    {
-      port = DEFAULT_PORT; //Set port to 5555
-    }
-
-    EchoServer1 sv = new EchoServer1(port, this);
-
-    try
-    {
-      sv.listen(); //Start listening for connections
-    }
-    catch (Exception ex)
-    {
-      System.out.println("ERROR - Could not listen for clients!");
-    }
-  }//end main
   
   
   
