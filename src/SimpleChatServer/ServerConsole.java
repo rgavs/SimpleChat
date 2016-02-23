@@ -12,7 +12,7 @@ public class ServerConsole implements ChatIF{
 	// The instance of the server that is connected to this console
 	EchoServer1 server;
 	
-	public ServerConsole(String host, int port){
+	public ServerConsole(int port){
 		try{
 			server = new EchoServer1(port, this);	
 		}
@@ -52,7 +52,6 @@ public class ServerConsole implements ChatIF{
 	
 	public static void main(String[] args)
 	  {
-	    String host = "";
 	    int port = 0;  //The port number
 	    
 	    try
@@ -64,14 +63,7 @@ public class ServerConsole implements ChatIF{
 	      port = DEFAULT_PORT; //Set port to 5555
 	    }
 	    
-	    try {
-			host = args[1];
-		}
-		catch(Throwable t){
-			host = "localhost";
-		}
-
-	    ServerConsole sconsole = new ServerConsole(host, DEFAULT_PORT);
+	    ServerConsole sconsole = new ServerConsole(port);
 	    sconsole.accept();  //Wait for console data
 	  }//end main()
 
