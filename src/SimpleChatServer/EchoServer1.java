@@ -39,7 +39,7 @@ public class EchoServer1 extends AbstractServer
    *
    * @param port The port number to connect on.
    */
-  public EchoServer1(int port, ChatIF serverUI)
+  public EchoServer1(int port, ChatIF serverUI) throws IOException
   {
     super(port);
     myServerUI = serverUI;
