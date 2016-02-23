@@ -7,7 +7,7 @@ public class getport extends ServerCommand{
 	}//end getport
 	
 	public void doCommand(){
-		getServer().getConsole().display("The port number is: " + 
+		getServer().serverUI().display("The port number is: " + 
 		getServer().getPort());
 	}//end doCommand()
 }
