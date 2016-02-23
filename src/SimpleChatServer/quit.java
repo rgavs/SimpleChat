@@ -21,11 +21,11 @@ public class quit extends ServerCommand
 		if(!getServer().isClosed())
 		{
 			getServer().setClosed(true);
-			getServer().getConsole().display("Connection closed, exiting.");
+			getServer().serverUI().display("Connection closed, exiting.");
 		}
 		else
 		{
-			getServer().getConsole().display("Connection already closed, exiting.");
+			getServer().serverUI().display("Connection already closed, exiting.");
 		}
 		System.exit(0);
 
