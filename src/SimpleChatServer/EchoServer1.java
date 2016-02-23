@@ -67,18 +67,16 @@ public class EchoServer1 extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-	  if (!isClosed()){
+	  
     ServerMessageHandler handler = (ServerMessageHandler) msg;
     handler.setServer(this);
     handler.setConnectionToClient(client);
     handler.handleMessage();
-	  }
-	  else
-		  sendToAllClients("The server has closed the listening.");
+	 
   }
   
   public void handleMessageFromUser(String message){
-	  if (!isClosed()){
+	
 	  if(message.charAt(0) != '#')
 	    {
 		  sendToAllClients("SERVER MSG>" + message);
@@ -88,9 +86,7 @@ public class EchoServer1 extends AbstractServer
 	      message = message.substring(1);
 	      createAndDoCommand(message);
 	    }
-	  }
-	  else
-		  serverUI().display("Connnection has closed. Unable to send messages.");
+	  
 	  
   }//end handleMessageFromUser
   
