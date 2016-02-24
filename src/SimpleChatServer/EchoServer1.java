@@ -161,6 +161,19 @@ public class EchoServer1 extends AbstractServer
 	  closed = status;
   }//end setStatus
   
+  protected synchronized void clientException(ConnectionToClient client, Throwable exception){
+	  sendToAllClients("SERVER MSG>  " + client.getInfo("id") + " has disconnected.");
+  }//end clientException
+  
+  protected synchronized void clientConnected(ConnectionToClient client){
+	  sendToAllClients("SERVER MSG> A client has connected.");
+	 
+  }//end clientConnected
+  
+  protected synchronized void clientDisconnected(ConnectionToClient client){
+	  sendToAllClients("SERVER MSG> A client has disconnected.");
+		 
+  }//end clientConnected
   
   
   
