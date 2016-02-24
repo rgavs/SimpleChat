@@ -3,8 +3,6 @@ package client;
 import java.io.IOException;
 
 import common.ServerLoginHandler;
-import common.ServerLogoffHandler;
-
 
 //import common.*;
 
@@ -18,17 +16,14 @@ public class logoff extends ClientCommand {
 		
 		try{
 			if (getClient().isConnected()){
-			getClient().sendToServer(new ServerLogoffHandler(getClient().getId()));
-			getClient().clientUI().display("Connection to " + getClient().getHost() + " closed.");
-			getClient().closeConnection();
+				getClient().closeConnection();
+				getClient().clientUI().display("Connection to the server closed.");
 			}
 			else 
-				System.out.println("You are already disconnected from this server");
+				System.out.println("You were not connectd to the server");
 		}
-		
-	catch(IOException ex) {
-		getClient().getHost();
-	}
+		catch(IOException ex) {
+		}
 		
 	}
 
