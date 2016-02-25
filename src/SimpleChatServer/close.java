@@ -29,7 +29,10 @@ public class close extends ServerCommand
 			//        			+ "The server is not closed.\n");
 			//        	return;
 			//        }//end try-catch block
-			getServer().handleMessageFromUser("WARNING-Server has CLOSED."); 
+		try{
+			getServer().close();
+         	}
+         	catch(IOException e){} 
 			getServer().setClosed(true);
 			getServer().serverUI().display("Connection closed");
 
