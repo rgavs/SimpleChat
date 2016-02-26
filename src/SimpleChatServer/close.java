@@ -19,29 +19,19 @@ public class close extends ServerCommand
 
 		if(!getServer().isClosed())
 		{
-			//        try{
-
-			//getServer().close();
-			//        }
-			//        catch(IOException ex)
-			//        {
-			//        	getServer().getConsole().display("IOException encountered while trying to close the server. "
-			//        			+ "The server is not closed.\n");
-			//        	return;
-			//        }//end try-catch block
-		try{
-			getServer().close();
-         	}
-         	catch(IOException e){}
-			getServer().setClosed(true);
-			getServer().serverUI().display("Connection closed");
-
-		}
+			try{
+				getServer().close();
+				getServer().serverUI().display("Connection closed");
+				getServer().setClosed(true);
+			}
+			catch(IOException e){
+				getServer().serverUI().display("An exception has occurred. Server cannot be closed.");
+			}
+		}//end if
 		else
 		{
 			getServer().serverUI().display("Connection already closed, exiting.");
-			getServer().setClosed(true);
-		}
+		}//end else
 
 
 	}
