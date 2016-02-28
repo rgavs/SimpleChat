@@ -27,5 +27,4 @@ public class ServerLoginHandler extends ServerMessageHandler {
 		getClient().setInfo("id", myId);
 		getServer().sendToAllClients("SERVER MSG> " + myId + " has joined");
 	}
-
 }

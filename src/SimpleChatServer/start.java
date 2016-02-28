@@ -9,7 +9,12 @@ public class start extends ServerNotConnectedCommand{
 	}//end start
 	
 	public void doCmd(){
-		getServer().serverStarted();
+		try {
+		getServer().listen();
+		} 
+		catch (IOException e) {
+		}
+		//getServer().serverStarted();
 		getServer().setClosed(false);
 		
 	}//end doCmb()
