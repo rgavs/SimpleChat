@@ -1,9 +1,6 @@
 package SimpleChatServer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -24,7 +21,6 @@ public class Channel {
 	
 	/**
 	 * Server to which the channel belongs
-	 * 
 	 */
 	private AbstractServer server;
 	
@@ -40,11 +36,9 @@ public class Channel {
 		Thread[] allClients = thisServer.getClientConnections();
 		clients = new ArrayList<ConnectionToClient>(users.length);
 		setupChannelUsers(users, allClients);
-
 	}
 	
 	/**
-	 * 
 	 * @param users Array of type String of usernames 
 	 * @param allClients Array of all ConnectionToClient clients
 	 */

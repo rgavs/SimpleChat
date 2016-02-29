@@ -1,9 +1,8 @@
 package SimpleChatServer;
 
 import java.io.*;
+import java.util.ArrayList;
 
-import client.ChatClient1;
-import client.ClientCommand;
 import ocsf.server.*;
 import common.*;
 
@@ -30,6 +29,7 @@ public class EchoServer1 extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5555;
+    private ArrayList<Channel> channels;
   
 
   //Constructors ****************************************************
@@ -44,6 +44,7 @@ public class EchoServer1 extends AbstractServer
     super(port);
     myServerUI = serverUI;
     closed = false;
+    initializeChannels();
     try {
     	listen();
     }
@@ -54,6 +55,10 @@ public class EchoServer1 extends AbstractServer
   
   public ChatIF serverUI() {
   	return myServerUI;
+  }
+  
+  private void initializeChannels() { 
+	  channels = new ArrayList<Channel>();
   }
 
   //Instance methods ************************************************
@@ -75,9 +80,41 @@ public class EchoServer1 extends AbstractServer
 	 
   }
   
-  public void handleMessageFromUser(String message){
+  public void addChannel(Channel chl) {
+	  channels.add(chl);
+  }
+  
+  
+  private void sendToChannelClients(Object msg, String channel) {
+	  for (int j = 0; j < channels.size(); j++) {
+		  Channel chl = channels.get(j);
+		  if (chl.getChannelName().equals(channel)) {
+			  Object[] channelClients = chl.enumerateClients();
+			  for (int i=0; i<channelClients.length; i++)
+			    {
+			      try
+			      {
+			        ((ConnectionToClient)channelClients[i]).sendToClient("Server MSG "+ chl.getChannelName()+"> "+msg);
+			      }
+			      catch (Exception e) {
+			    	  serverUI().display("Error in sending message");
+			      }
+			    }
+			  return;
+		  }
+		  else {
+			  serverUI().display("Channel with the name " + channel + " does not exist.");
+		  	  return;
+		  }
+	  }
 	
-	  if(message.charAt(0) != '#')
+  }
+  
+  public void handleMessageFromUser(String message){
+	  if (message.charAt(0) == '@') {
+		  sendToChannel(message.substring(1));
+	  }
+	  else if(message.charAt(0) != '#')
 	    {
 		  sendToAllClients("SERVER MSG>" + message);
 	    }
@@ -90,30 +127,45 @@ public class EchoServer1 extends AbstractServer
 	  
   }//end handleMessageFromUser
   
+  public void sendToChannel(String message) {
+	  String channelName;
+	  int indexBlank = message.indexOf(' ');
+	  if(indexBlank == -1) {
+		  channelName = message;
+		  String msg = "";
+		  sendToChannelClients(channelName, msg);
+	  }
+	  else {
+		  channelName = message.substring(0, indexBlank);
+		  String msg = message.substring(indexBlank + 1);
+		  sendToChannelClients(msg, channelName);
+	  }
+  }
+  
   public void createAndDoCommand(String message){
 	  String commandStr; 
 	  int indexBlank = message.indexOf(' ');
 	  if(indexBlank == -1)
 	  {
-      commandStr = "SimpleChatServer." + message;
-      message = "";
+		  commandStr = "SimpleChatServer." + message;
+		  message = "";
 	  }
 	  else
 	  {
 		  commandStr = "SimpleChatServer." + message.substring(0, indexBlank);
 	      message = message.substring(indexBlank+1);
-	    }
+	  }
 
-	    try
-	    {
-	      Class[] param = {String.class, EchoServer1.class};
+	  try
+	  {
+		  Class[] param = {String.class, EchoServer1.class};
 	      ServerCommand cmd = (ServerCommand)Class.forName(commandStr).getConstructor(param).newInstance(message, this);
 	      cmd.doCommand();
-	    }
-	    catch(Exception ex)
-	    {
-	      serverUI().display("\nNo such command " + commandStr + "\nNo action taken.");
-	    }
+	  }
+	  catch(Exception ex)
+	  {
+	     serverUI().display("\nNo such command " + commandStr + "\nNo action taken.");
+	  }
 	  
   }//end createAndDoCommand
 
@@ -134,14 +186,12 @@ public class EchoServer1 extends AbstractServer
    */
   protected void serverStopped()
   {
-	  //this.stopListening();
 	  closed = true;
 	  serverUI().display("Server has stopped listening for connections.");
 	  sendToAllClients("SERVER MSG> Server has stopped listening.");
   }
   
   protected Boolean isClosed() {
-	  
 	  return closed;
   }
 
@@ -174,7 +224,5 @@ public class EchoServer1 extends AbstractServer
 	  sendToAllClients("SERVER MSG> A client has disconnected.");
 		 
   }//end clientConnected
-  
-  
-  
 }
+

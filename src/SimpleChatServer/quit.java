@@ -16,7 +16,6 @@ public class quit extends ServerCommand
 
 	public void doCommand()
 	{
-
 		if(!getServer().isClosed())
 		{
 			getServer().setClosed(true);
