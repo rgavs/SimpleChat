@@ -1,6 +1,7 @@
 package SimpleChatServer;
 
 import java.io.*;
+import java.util.HashMap;
 
 import client.ChatClient1;
 import client.ClientCommand;
@@ -26,6 +27,7 @@ public class EchoServer1 extends AbstractServer
   //Class variables *************************************************
 	private boolean closed; 
 	private ChatIF myServerUI;
+	private HashMap<String, String> accounts;//added by Shouheng
   /**
    * The default port to listen on.
    */
@@ -44,6 +46,8 @@ public class EchoServer1 extends AbstractServer
     super(port);
     myServerUI = serverUI;
     closed = false;
+    accounts = new HashMap<String, String>();
+    accounts.put("guest", "123");
     try {
     	listen();
     }
@@ -160,6 +164,35 @@ public class EchoServer1 extends AbstractServer
   protected void setClosed(Boolean status){
 	  closed = status;
   }//end setStatus
+  
+  //Written by Shouheng Wu
+  //This method checks whether the given ID is already an existing user
+  public boolean checkExistingAccount (String id){
+	  if (accounts.containsKey(id)){
+		  return true;
+	  }
+	  else{
+		  return false;
+	  }
+  }//end checkExistingAccount
+  
+  //Written by Shouheng Wu
+  //This method creates a user account by adding a id/password combination to the hashmap accounts
+  public void setNewAccount(String id, String password){
+	  accounts.put(id, password);
+  }//end class
+  
+  //Written by Shouheng Wu
+  //This method returns true if the provided password is correct
+  public boolean checkPassword(String id, String password){
+	  if(accounts.get(id).equals(password)){
+		  return true;
+	  }
+	  else{
+		  return false;
+	  }
+	  
+  }//end checkPassword
   
   protected synchronized void clientException(ConnectionToClient client, Throwable exception){
 	  sendToAllClients("SERVER MSG>  " + client.getInfo("id") + " has disconnected.");
