@@ -68,10 +68,16 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    ServerMessageHandler handler = (ServerMessageHandler) msg;
-    handler.setServer(this);
-    handler.setConnectionToClient(client);
-    handler.handleMessage();
+    //if this message needs to be sent to monitor
+	  if (msg.toString().contains("##")){
+	    sendToMonitor(msg);  
+	}
+	else{
+	    ServerMessageHandler handler = (ServerMessageHandler) msg;
+	    handler.setServer(this);
+	    handler.setConnectionToClient(client);
+	    handler.handleMessage();
+	}
 	 
   }
   
