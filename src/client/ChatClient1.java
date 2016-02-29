@@ -32,6 +32,8 @@ public class ChatClient1 extends AbstractClient
   private ChatIF myClientUI;
 
   String myId;
+  
+  String monitor;
 
   //Constructors ****************************************************
 
@@ -49,6 +51,7 @@ public class ChatClient1 extends AbstractClient
     super(host, port); //Call the superclass constructor
     myClientUI = clientUI;
     myId = id;
+    monitor = null;
     try
     {
       openConnection();
@@ -71,6 +74,14 @@ public class ChatClient1 extends AbstractClient
   {
     return myId;
   }
+  
+  public String getMonitor(){
+	  return monitor;
+  }
+  
+  public void setMonitor(String name){
+	  monitor = name;
+  }
 
 
   //Instance methods ************************************************
@@ -83,6 +94,10 @@ public class ChatClient1 extends AbstractClient
   public void handleMessageFromServer(Object msg)
   {
     clientUI().display(msg.toString());
+    
+    if (!monitor.equals(null)){
+    	sendMessageToServer(msg.toString(),getMonitor(),getId());
+    }
   }
 
   /**
@@ -129,6 +144,28 @@ public class ChatClient1 extends AbstractClient
       clientUI().display("Not connected to a server. Must login before sending a message.");
     }
   }
+  
+  /**
+   * This method handles messages and sent them to monitor
+   * String after "##" is the user name of the monitor
+   * @param message
+   * @param monitor
+   * @param myId
+   */
+  private void sendMessageToServer(String message, String monitor, String myId)
+  {
+      ServerStringMessageHandler mess = new ServerStringMessageHandler(message+"##"+monitor+"##"+myId);
+      try
+      {
+        sendToServer(mess);
+      }
+      catch(IOException e)
+      {
+        clientUI().display("IOException " + e + "\nCould not send message to server");
+        //quit();
+      }
+    }
+    
 
   /**
    * This method handles a command message after the '#' has been stripped
