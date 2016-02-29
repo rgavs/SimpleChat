@@ -23,7 +23,7 @@ public class quit extends ClientCommand
     {
       if(getClient().isConnected())
       {
-    	getClient().sendToServer(new ServerQuitHandler(getClient().getId()));
+    	  getClient().sendToServer(new ServerQuitHandler(getClient().getId()));
         getClient().clientUI().display("Connection closed, exiting.");
         getClient().closeConnection();
       }
