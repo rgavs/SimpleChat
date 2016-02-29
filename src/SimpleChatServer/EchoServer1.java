@@ -73,7 +73,8 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    ServerMessageHandler handler = (ServerMessageHandler) msg;
+    ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
+    handler.setMessage((String)msg);
     handler.setServer(this);
     handler.setConnectionToClient(client);
     handler.handleMessage();
@@ -225,4 +226,3 @@ public class EchoServer1 extends AbstractServer
 		 
   }//end clientConnected
 }
-

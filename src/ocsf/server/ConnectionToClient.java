@@ -63,7 +63,7 @@ public class ConnectionToClient extends Thread
    * information about each client. Used by the setInfo and getInfo
    * methods.
    */
-  private HashMap savedInfo = new HashMap(10);
+  private HashMap<String, Object> savedInfo = new HashMap<String, Object>(10);
 
 
 // CONSTRUCTORS *****************************************************
@@ -135,12 +135,10 @@ public class ConnectionToClient extends Thread
   {
     readyToStop = true; // Set the flag that tells the thread to stop
 
-    try
-    {
+    try {
       closeAll();
     }
-    finally
-    {
+    finally {
       server.clientDisconnected(this);
     }
   }
