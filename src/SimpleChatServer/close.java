@@ -26,7 +26,7 @@ public class close extends ServerCommand {
 
 		} else {
 			getServer().serverUI().display("Connection already closed, exiting.");
-		}//end else
+		}
 
 	}
 }

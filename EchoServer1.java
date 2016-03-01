@@ -2,7 +2,6 @@ package SimpleChatServer;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import client.ChatClient1;
 import client.ClientCommand;
@@ -33,7 +32,6 @@ public class EchoServer1 extends AbstractServer
    */
   final public static int DEFAULT_PORT = 5555;
     private ArrayList<Channel> channels;
-    private HashMap<String, String> accounts;//added by Shouheng
   
 
   //Constructors ****************************************************
@@ -48,10 +46,6 @@ public class EchoServer1 extends AbstractServer
     super(port);
     myServerUI = serverUI;
     closed = false;
-    
-    accounts = new HashMap<String, String>();//added by Shouheng
-    accounts.put("guest", "123");//added by Shouheng.
-    
     initializeChannels();
     try {
     	listen();
@@ -81,8 +75,7 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-    handler.setMessage((String)msg);
+    ServerMessageHandler handler = (ServerMessageHandler) msg;
     handler.setServer(this);
     handler.setConnectionToClient(client);
     handler.handleMessage();
@@ -119,35 +112,6 @@ public class EchoServer1 extends AbstractServer
 	
   }
   
-//Written by Shouheng Wu
-  //This method checks whether the given ID is already an existing user
-  public boolean checkExistingAccount (String id){
-	  if (accounts.containsKey(id)){
-		  return true;
-	  }
-	  else{
-		  return false;
-	  }
-  }//end checkExistingAccount
-  
-  //Written by Shouheng Wu
-  //This method creates a user account by adding a id/password combination to the hashmap accounts
-  public void setNewAccount(String id, String password){
-	  accounts.put(id, password);
-  }//end class
-  
-  //Written by Shouheng Wu
-  //This method returns true if the provided password is correct
-  public boolean checkPassword(String id, String password){
-	  if(accounts.get(id).equals(password)){
-		  return true;
-	  }
-	  else{
-		  return false;
-	  }
-	  
-  }//end checkPassword
-  
   public void handleMessageFromUser(String message){
 	  if (message.charAt(0) == '@') {
 		  sendToChannel(message.substring(1));
@@ -164,6 +128,21 @@ public class EchoServer1 extends AbstractServer
 	  
 	  
   }//end handleMessageFromUser
+  
+  public void sendToChannel(String message) {
+	  String channelName;
+	  int indexBlank = message.indexOf(' ');
+	  if(indexBlank == -1) {
+		  channelName = message;
+		  String msg = "";
+		  sendToChannelClients(channelName, msg);
+	  }
+	  else {
+		  channelName = message.substring(0, indexBlank);
+		  String msg = message.substring(indexBlank + 1);
+		  sendToChannelClients(msg, channelName);
+	  }
+  }
   
   public void createAndDoCommand(String message){
 	  String commandStr; 
@@ -253,3 +232,4 @@ public class EchoServer1 extends AbstractServer
   
   
 }
+
