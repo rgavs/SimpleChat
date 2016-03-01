@@ -149,10 +149,7 @@ public class EchoServer1 extends AbstractServer
   }//end checkPassword
   
   public void handleMessageFromUser(String message){
-	  if (message.charAt(0) == '@') {
-		  sendToChannel(message.substring(1));
-	  }
-	  else if(message.charAt(0) != '#')
+	  if(message.charAt(0) != '#')
 	    {
 		  sendToAllClients("SERVER MSG>" + message);
 	    }
