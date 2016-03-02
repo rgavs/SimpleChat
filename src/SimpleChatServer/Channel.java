@@ -46,17 +46,17 @@ public class Channel {
 		for (int i=0; i<users.length; i++){
 			System.out.println(users[i]);
 		}
-		here: for (int i = 0; i<users.length; i++) {
+		for (int i = 0; i<users.length; i++) {
 			for (int k =0; i < allClients.length; k++) {
 				ConnectionToClient client = (ConnectionToClient) allClients[k];
 				String username = (String) client.getInfo("id");
 				String user = users[i];
 				if (user == null) 
-					break here; 
+					break; 
 				else {
 					if (user.equals(username)) {
 					clients.add (client);
-					break here;
+					break;
 					}
 				}
 			}	
