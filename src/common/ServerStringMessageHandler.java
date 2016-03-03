@@ -1,6 +1,5 @@
 package common;
 
-import ocsf.server.*;
 import java.io.*;
 
 /**
@@ -24,5 +23,4 @@ public class ServerStringMessageHandler extends ServerNonLoginHandler
     System.out.println((String)getClient().getInfo("id") + "> " + myString);
     getServer().sendToAllClients((String)getClient().getInfo("id") + "> " + myString);
   }
-
 }
