@@ -68,19 +68,18 @@ public class Channel {
 	
 	/**
 	 * Parses the string from the user for the name of the channel and returns it.
-	 * @param stringFromUser
+	 * @param str	from user
 	 * @return names of the channel
 	 */
-	private String setupChannelName(String stringFromUser) {
-		int comma = stringFromUser.indexOf(',');
-		return stringFromUser.substring(0,comma);
+	private String setupChannelName(String str) {
+		return str.split(",")[0];
 	}
 	
 	/**
 	 * Takes the string from a user and parses it for the username of each user 
 	 * within the string.
-	 * @param stringFromUser 
-	 * @return array of strings with usernames 
+	 * @param stringFromUser
+	 * @return array of strings with usernames
 	 */
 	private String[] parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
 		int index = stringFromUser.indexOf(","); //start after first comma, string before first comma should be channel name

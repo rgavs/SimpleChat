@@ -1,8 +1,6 @@
 package SimpleChatServer;
+import java.io.IOException;
 
-//import java.io.IOException;
-
-import SimpleChatServer.ServerCommand;
 
 /**
  *  Implements client command to quit, after first closing any connection to the current host.

@@ -18,11 +18,6 @@ import client.*;
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
- *
- *
- * Modified by Shouheng Wu to accomodate password feature, and to
- * provide a default guest user that can be used to create new accounts
- * February 28, 2016
  */
 public class ClientConsole implements ChatIF
 {
@@ -48,11 +43,11 @@ public class ClientConsole implements ChatIF
    * @param host The host to connect to.
    * @param port The port to connect on.
    */
-  public ClientConsole(String host, int port, String id, String password)
+  public ClientConsole(String host, int port, String id)
   {
     try
     {
-      client= new ChatClient1(host, port, this, id, password);
+      client= new ChatClient1(host, port, this, id);
     }
     catch(IOException exception)
     {
@@ -113,38 +108,36 @@ public class ClientConsole implements ChatIF
   {
 	String host = "";
 	String id = "";
-	String password = "";
     int port = 0;  //The port number
 
     try
     {
       id = args[0];
-      password = args[1];
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      System.out.println("You can't login without providing both the usernamd and the password.");
+      System.out.println("No id provided, can't login.");
       System.exit(-1);
     }
     System.out.println("Loggging in as " + id);
-
+    
     try
     {
-      host = args[2];
+      host = args[1];
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
       host = "localhost";
     }
-
+    
     try
     {
-    	port = Integer.parseInt(args[3]);
+    	port = Integer.parseInt(args[2]);
     }
     catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
     	port = DEFAULT_PORT;
     }
-    ClientConsole chat= new ClientConsole(host, port, id, password);
+    ClientConsole chat= new ClientConsole(host, port, id);
     chat.accept();  //Wait for console data
   }
 }

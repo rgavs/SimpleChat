@@ -14,8 +14,8 @@ import common.*;
  *  message itself.
  *
  * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Dr Robert Laganiegravere
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @author Chris Nevison
  * @version February 2012
@@ -72,12 +72,10 @@ public class EchoServer1 extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-	  
     ServerMessageHandler handler = (ServerMessageHandler) msg;
     handler.setServer(this);
     handler.setConnectionToClient(client);
     handler.handleMessage();
-	 
   }
   
   public void addChannel(Channel chl) {
@@ -201,7 +199,7 @@ public class EchoServer1 extends AbstractServer
    * This method is responsible for the creation of
    * the server instance (there is no UI in this phase).
    *
-   * @param args[0] The port number to listen on.  Defaults to 5555
+   * param args[0] The port number to listen on.  Defaults to 5555
    *          if no argument is entered.
    */
   
