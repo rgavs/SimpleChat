@@ -10,7 +10,7 @@ public class ServerMessageHandler1 extends ServerMessageHandler {
 	}
 	
 	public void handleMessage(){
-		String clientId = getClient().getHostName();
+		String clientId = getClient().getInetAddress().getHostName();
 		if(message.charAt(0) != '#')
 	    {
 		  getServer().sendToAllClients(clientId + " MSG>" + message);
