@@ -152,6 +152,22 @@ public class EchoServer1 extends AbstractServer
 	  }
   }
 
+/**
+   * Returns the connection to the person who will monitor the message
+   * 
+   * @param id
+   * @param allClients
+   * @return Connection to the monitor
+   */
+  final public ConnectionToClient getConnection(String id, Thread[] allClients){
+	  for (int i =0; i < allClients.length; i++) {
+			ConnectionToClient client = (ConnectionToClient) allClients[i];
+			String username = (String) client.getInfo("id");
+			if (username.equals(id)) 
+				return client; 
+	  }
+	  return null;
+  }
 
   
 //Written by Shouheng Wu
