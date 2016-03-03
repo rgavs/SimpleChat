@@ -43,8 +43,8 @@ public class Channel {
 	 * @param allClients Array of all ConnectionToClient clients
 	 */
 	private void setupChannelUsers(String[] users, Thread[] allClients) {
-		for (int i=0; i<users.length; i++){
-			System.out.println(users[i]);
+		for (String user1 : users) {
+			System.out.println(user1);
 		}
 		here: for (int i = 0; i<users.length; i++) {
 			for (int k =0; i < allClients.length; k++) {
@@ -61,10 +61,9 @@ public class Channel {
 				}
 			}	
 		}
-		for (int i=0; i<clients.size(); i++){
-			System.out.println(clients.get(i));
+		for (ConnectionToClient client : clients) {
+			System.out.println(client);
 		}
-	
 	}
 	
 	/**
@@ -74,8 +73,7 @@ public class Channel {
 	 */
 	private String setupChannelName(String stringFromUser) {
 		int comma = stringFromUser.indexOf(',');
-		String channelName = stringFromUser.substring(0,comma);
-		return channelName;
+		return stringFromUser.substring(0,comma);
 	}
 	
 	/**
@@ -104,7 +102,7 @@ public class Channel {
 		return channelName;
 	}
 	
-	public int numOfClients(){
+	public int numClients(){
 		return clients.size();
 	}
 	
@@ -113,7 +111,6 @@ public class Channel {
 	}
 	
 	public Object[] enumerateClients() {
-		Object[] newArray = clients.toArray();//Arrays.copyOf(clients, clients.length);
-		return newArray;
+		return clients.toArray();
 	}
 }

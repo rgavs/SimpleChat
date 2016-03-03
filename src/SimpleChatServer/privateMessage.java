@@ -27,7 +27,6 @@ public class privateMessage extends ServerCommand {
 	            try{
 	                connection.sendToClient(message);
 	            }
-	            
 	            catch (Exception ex) {}
 	        }
 	    }
