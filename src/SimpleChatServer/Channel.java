@@ -116,5 +116,4 @@ public class Channel {
 		Object[] newArray = clients.toArray();//Arrays.copyOf(clients, clients.length);
 		return newArray;
 	}
-	
 }
