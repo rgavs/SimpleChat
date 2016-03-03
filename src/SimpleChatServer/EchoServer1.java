@@ -124,6 +124,36 @@ public class EchoServer1 extends AbstractServer
 	
   }
   
+  /**
+   * send message only to the monitor
+   * send feedback to the client if the person who will monitor is not connected
+   * 
+   * @param msg
+   */
+ public void sendToMonitor(Object msg){
+	  String[] list = msg.toString().split("##");
+	  String name = list[1];
+	  String id = list[2];
+	//some method to find the connection to client using the id name
+	  ConnectionToClient monitor;
+	  monitor = getConnection(name, getClientConnections());
+	  if (monitor != null){
+	  try{
+		 monitor.sendToClient(list[0]);
+	  }
+	  catch (Exception ex){}
+	  }
+	  else {
+		  ConnectionToClient client = getConnection(id, getClientConnections());
+		  try {
+			  client.sendToClient("The person you asked for monitoring is not connected. Try another one.");
+		  }
+		  catch (Exception ex){}
+	  }
+  }
+
+
+  
 //Written by Shouheng Wu
   //This method checks whether the given ID is already an existing user
   public boolean checkExistingAccount (String id){
