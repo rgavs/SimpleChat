@@ -16,7 +16,7 @@ public class stop extends ServerCommand {
 		if (!getServer().isClosed()){
 			getServer().setClosed(true);
 			//getServer().handleMessageFromUser("Server has stopped listening.");
-			getServer().serverStopped();
+			getServer().stopListening();
 			//getServer().serverUI().display("Server has stopped listening.");
 			}
 		else
