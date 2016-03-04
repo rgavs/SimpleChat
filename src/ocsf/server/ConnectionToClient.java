@@ -156,7 +156,7 @@ public class ConnectionToClient extends Thread
   }
 
   /**
-   * Returns a string representation of the client.
+   * Returns a stri8ng representation of the client.
    *
    * @return the client's description.
    */

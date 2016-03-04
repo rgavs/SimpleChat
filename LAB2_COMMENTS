@@ -11,7 +11,9 @@ getport, get host, setport are good
 
 Server
 -3 in handleMessageFromClient no need to check isClosed — cannot be called when server is closed. X
+
 -3 in HandleMessage - no check needed and no message “server is closed” In fact this prevents the server-user from resetting the port then reopening the server with start X
+
 -2 in start should be no call to handleMesssageFromUser — just use display! X
 
 -3 Server should have ChatIF, not ServerConsole, so a GUI could be added later X

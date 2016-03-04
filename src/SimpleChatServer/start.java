@@ -14,7 +14,6 @@ public class start extends ServerNotConnectedCommand{
 		} 
 		catch (IOException e) {
 		}
-		//getServer().serverStarted();
 		getServer().setClosed(false);
 		
 	}//end doCmb()
