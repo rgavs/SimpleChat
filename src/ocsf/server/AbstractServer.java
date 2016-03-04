@@ -191,13 +191,11 @@ public abstract class AbstractServer implements Runnable
   {
     Thread[] clientThreadList = getClientConnections();
 
-    for (int i=0; i<clientThreadList.length; i++)
-    {
-      try
-      {
-        ((ConnectionToClient)clientThreadList[i]).sendToClient(msg);
+    for (Thread aClientThreadList : clientThreadList) {
+      try {
+        ((ConnectionToClient) aClientThreadList).sendToClient(msg);
+      } catch (Exception ex) {
       }
-      catch (Exception ex) {}
     }
   }
 

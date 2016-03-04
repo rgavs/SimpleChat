@@ -38,6 +38,7 @@ public class ChatClient1 extends AbstractClient
 
   String myId;
   String myPassword;
+  String monitor;
 
   //Constructors ****************************************************
 
@@ -77,6 +78,14 @@ public class ChatClient1 extends AbstractClient
   public String getId()
   {
     return myId;
+  }
+
+  public String getMonitor() {
+    return monitor;
+  }
+
+  public void setMonitor(String name) {
+    monitor = name;
   }
 
   public String getPassword(){
@@ -130,8 +139,7 @@ public class ChatClient1 extends AbstractClient
       }
       catch(IOException e)
       {
-        clientUI().display("IOException " + e + "\nCould not send message to server.  Terminating client.");
-        //quit();
+        clientUI().display("IOException: " + e + "\nCould not send message to server.  Terminating client.");
       }
     }
     else

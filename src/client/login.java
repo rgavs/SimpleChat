@@ -13,7 +13,7 @@ import SimpleChatServer.EchoServer1;
  * 
  * Modified by Shouheng to allow for password protection, and to change the 
  * error message in connectionException()
- *February 28 2016
+ * February 28 2016
  */
 public class login extends NotConnectedClientCommand
 {
@@ -26,14 +26,14 @@ public class login extends NotConnectedClientCommand
   {	  
 	  int indexOfBlank = getStr().indexOf(' ');
 	  
-	  if(indexOfBlank == -1){
+	  if(indexOfBlank == -1) {
 		  getClient().clientUI().display("Incorrect username or password.");
 		  return;
-	  }//end if
+	  } // end if
 	  String username = getStr().substring(0, indexOfBlank);
 	  String password = getStr().substring(indexOfBlank+1);
-	  
-	  if(username.equals("")){
+      
+	  if(username.equals("")) {
 		  getClient().clientUI().display("Incorrect username or password.");
 		  return;
 	  }
@@ -50,6 +50,5 @@ public class login extends NotConnectedClientCommand
       getClient().clientUI().display("Connection to " + getClient().getHost() + " failed.");
     }
   }
-
 }
 

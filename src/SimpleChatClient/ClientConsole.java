@@ -77,8 +77,7 @@ public class ClientConsole implements ChatIF
         new BufferedReader(new InputStreamReader(System.in));
       String message;
 
-      while (true)
-      {
+      while (true) {
         message = fromConsole.readLine();
         client.handleMessageFromClientUI(message);
       }
