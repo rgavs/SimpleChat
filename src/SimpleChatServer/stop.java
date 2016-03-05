@@ -1,6 +1,5 @@
 package SimpleChatServer;
 
-// TODO move messages to serverStopped
 public class stop extends ServerCommand {
     public stop(String str, EchoServer1 server) {
         super(str, server);

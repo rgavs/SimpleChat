@@ -21,11 +21,11 @@ public class login extends NotConnectedClientCommand
   {
     super(str, client);
   }
-
+//        TODO: restrict valid characters for usernames
   public void doCmd()
   {	  
 	  int indexOfBlank = getStr().indexOf(' ');
-	  
+	      
 	  if(indexOfBlank == -1) {
 		  getClient().clientUI().display("Incorrect username or password.");
 		  return;
@@ -42,8 +42,8 @@ public class login extends NotConnectedClientCommand
 	  
     try
     {
-      getClient().openConnection();
-      getClient().sendToServer(new ServerLoginHandler(getClient().getId(), getClient().getPassword()));
+        getClient().openConnection();
+        getClient().sendToServer(new ServerLoginHandler(getClient().getId(), getClient().getPassword()));
     }
     catch(IOException ex)
     {

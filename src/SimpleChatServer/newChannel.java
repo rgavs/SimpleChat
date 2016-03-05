@@ -7,9 +7,8 @@ public class newChannel extends ServerCommand {
 	}
 	
 	public void doCommand() {
-		Channel chl = new Channel(getStr(),getServer());
-		getServer().addChannel(chl);
-		getServer().serverUI().display("New channel with the name " + chl.getChannelName() + " created");
+//		Channel chl = new Channel(getStr(),getServer());
+		getServer().addChannel(new Channel(getStr(), getServer()));
+		getServer().serverUI().display("New channel with the name " + (new Channel(getStr(), getServer())).getChannelName() + " created");
 	}
-	
 }

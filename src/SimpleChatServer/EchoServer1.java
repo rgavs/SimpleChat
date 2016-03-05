@@ -15,8 +15,8 @@ import common.*;
  *  message itself.
  *
  * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Dr Robert Laganiegravere
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @author Chris Nevison
  * @version February 2012

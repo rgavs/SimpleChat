@@ -1,6 +1,6 @@
 package SimpleChatServer;
 
-import java.util.ArrayList;
+import java.util.*;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -18,6 +18,12 @@ public class Channel {
 	 * Name of the channel given by integer.
 	 */
 	private String channelName;
+
+	/**
+	 * Client requested blocks: HashMap of associations 0..* of 
+	 * <code> ConnectionToClient </code> to <code> ConnectionToClient </code>
+	 */
+	private HashMap<String,String[]> blocks;
 	
 	/**
 	 * Server to which the channel belongs
@@ -78,23 +84,11 @@ public class Channel {
 	/**
 	 * Takes the string from a user and parses it for the username of each user 
 	 * within the string.
-	 * @param stringFromUser
-	 * @return array of strings with usernames
+	 * @param stringFromUser    stringFromUser: channelName, user1, user2...
+	 * @return 					array of strings with usernames
 	 */
-	private String[] parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
-		int index = stringFromUser.indexOf(","); //start after first comma, string before first comma should be channel name
-		String[] users = new String[15];
-		int count = 0;
-		while (index<stringFromUser.lastIndexOf(",") ) {
-			int end = stringFromUser.indexOf(",", index+1);
-			String user = stringFromUser.substring(index+1, end);
-			users[count] = user;
-			count++;
-			index = end;
-		}
-		if (index != stringFromUser.length()) //must be one more user eg. user1, user2, user 3 ->user 3 left out of while loop
-			users[count] = stringFromUser.substring(index+1, stringFromUser.length());
-		return users;
+	private String[] parseChannelUsers(String stringFromUser) {
+		return Arrays.copyOfRange(stringFromUser.split(","),1,stringFromUser.split(",").length-1);
 	}
 	
 	public String getChannelName() {
