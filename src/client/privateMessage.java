@@ -10,11 +10,12 @@ public class privateMessage extends ClientCommand {
 	  }
 	
 	public void doCommand()
-	{ 
+	  { 
 		Object msg = "#private " + getStr(); 
 		try{
-	    	getClient().sendToServer(msg);
+	    getClient().sendToServer(msg);
 		}
 		catch (IOException ex){}
-	}
+		
+	  }
 }

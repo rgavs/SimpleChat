@@ -7,7 +7,7 @@ public class monitor extends ClientCommand {
     }
 
     public void doCommand() {
-        //set the monitor of client.
+         //set the monitor of client.
         getClient().setMonitor(getClient().getMonitor());
     }
 }

@@ -8,7 +8,9 @@ public class gethost extends ClientCommand {
 	  }
 
 	public void doCommand(){
+
 		getClient().clientUI().display("The host is " + getClient().getHost());
+
 	}
 
 }

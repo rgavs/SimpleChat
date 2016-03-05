@@ -14,9 +14,9 @@ import client.*;
  * chat interface in order to activate the display() method.
  * Warning: Some of the code here is cloned in ServerConsole
  *
- * @author Franccedil;ois Beacutelanger
+ * @author Fran&ccedil;ois B&eacute;langer
  * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Laganigravere
+ * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  * 
  * 
@@ -73,7 +73,8 @@ public class ClientConsole implements ChatIF
   {
     try
     {
-      BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
+      BufferedReader fromConsole =
+        new BufferedReader(new InputStreamReader(System.in));
       String message;
 
       while (true) {
@@ -83,7 +84,8 @@ public class ClientConsole implements ChatIF
     }
     catch (Exception ex)
     {
-      System.out.println("Unexpected error while reading from console!");
+      System.out.println
+        ("Unexpected error while reading from console!");
     }
   }
 
@@ -104,7 +106,7 @@ public class ClientConsole implements ChatIF
   /**
    * This method is responsible for the creation of the Client UI.
    *
-   * @param args The host to connect to.
+   * @param args[0] The host to connect to.
    */
   public static void main(String[] args)
   {

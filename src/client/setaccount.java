@@ -2,8 +2,11 @@ package client;
 
 import common.ServerNewAccountHandler;
 
-/**
- *Written by Shouheng
+//import ocsf.client.*;
+//import java.io.IOException;
+
+
+/*Written by Shouheng
  *February 2016
  *
  *This class is used to process client commands of the format "#setaccount usr pwd", which 
