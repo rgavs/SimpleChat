@@ -3,8 +3,6 @@ package SimpleChatServer;
 import java.io.*;
 import common.ChatIF;
 
-import SimpleChatClient.ClientConsole;
-
 public class ServerConsole implements ChatIF{
 	
 	final public static int DEFAULT_PORT = 5555;

@@ -3,8 +3,6 @@ package client;
 import common.*;
 import java.io.IOException;
 
-import SimpleChatServer.EchoServer1;
-
 /**
  *  Implements client command to log in to the current host.
  *

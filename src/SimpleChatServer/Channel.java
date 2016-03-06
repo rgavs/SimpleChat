@@ -23,6 +23,10 @@ public class Channel {
 	 * Server to which the channel belongs
 	 */
 	private AbstractServer server;
+
+	/**
+	 * Blocks/exclusions in where to send messages 
+     */
 	
 	public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
 		server = thisServer;
@@ -78,8 +82,8 @@ public class Channel {
 	/**
 	 * Takes the string from a user and parses it for the username of each user 
 	 * within the string.
-	 * @param stringFromUser
-	 * @return array of strings with usernames
+	 * @param stringFromUser comma-separated list of usernames
+	 * @return	array of strings with usernames
 	 */
 	private String[] parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
 		int index = stringFromUser.indexOf(","); //start after first comma, string before first comma should be channel name
