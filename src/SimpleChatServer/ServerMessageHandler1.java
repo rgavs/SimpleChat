@@ -10,16 +10,22 @@ public class ServerMessageHandler1 extends ServerMessageHandler {
 	}
 	
 	public void handleMessage(){
-		String clientId = getClient().getInetAddress().getHostName();
-		if(message.charAt(0) != '#')
-	    {
-		  getServer().sendToAllClients(clientId + " MSG>" + message);
-	    }
-	    else
-	    {
-	      message = message.substring(1);
-	      ((EchoServer1)getServer()).createAndDoCommand(message);
-	    }
+		try{
+			String clientId = (String)getClient().getInfo("id");
+			if(message.charAt(0) != '#')
+		    {
+			  getServer().sendToAllClients(clientId + " MSG>" + message);
+		    }
+		    else
+		    {
+		      message = message.substring(1);
+		      ((EchoServer1)getServer()).createAndDoCommand(message);
+		    }
+		
+		}
+		catch (Exception ex){}
+		
+		
 		
 	}
 

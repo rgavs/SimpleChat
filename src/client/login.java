@@ -40,6 +40,9 @@ public class login extends NotConnectedClientCommand
 	  
 	  //check if password consists of blanks only
 	  
+	  getClient().setId(username);
+	  getClient().setPassword(password);
+	  
     try
     {
       getClient().openConnection();

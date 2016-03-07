@@ -23,9 +23,9 @@ public class privateMessage extends ServerCommand {
 		for (int i=0; i<clientThreadList.length; i++)
 	    {
 	    	ConnectionToClient connection = (ConnectionToClient)clientThreadList[i];
-	    	if (connection.getInetAddress().getHostName().equals(receiver)){
+	    	if (((String)connection.getInfo("id")).equals(receiver)){
 	            try{
-	                connection.sendToClient(message);
+	                connection.sendToClient((String)connection.getInfo("id") + ">" + message);
 	            }
 	            
 	            catch (Exception ex) {}

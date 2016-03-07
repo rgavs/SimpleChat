@@ -79,8 +79,17 @@ public class ChatClient1 extends AbstractClient
     return myId;
   }
 
+  
+  public void setId(String newId){
+	  myId = newId;
+  }
+  
   public String getPassword(){
 	  return myPassword;  
+  }
+  
+  public void setPassword(String newPwd){
+	  myPassword = newPwd;
   }
 
   //Instance methods ************************************************

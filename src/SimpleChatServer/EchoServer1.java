@@ -81,12 +81,12 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-    handler.setMessage((String)msg);
+    ServerMessageHandler handler = (ServerMessageHandler) msg;
+
     handler.setServer(this);
     handler.setConnectionToClient(client);
     handler.handleMessage();
-	 
+	
   }
   
   public void addChannel(Channel chl) {
@@ -150,7 +150,7 @@ public class EchoServer1 extends AbstractServer
   
   public void handleMessageFromUser(String message){
 	  if (message.charAt(0) == '@') {
-		  sendToChannel(message.substring(1));
+		  //sendToChannel(message.substring(1));
 	  }
 	  else if(message.charAt(0) != '#')
 	    {
