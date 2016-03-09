@@ -5,6 +5,7 @@
 package ocsf.server;
 
 import java.net.*;
+import java.util.*;
 import java.io.*;
 
 /**
@@ -163,14 +164,15 @@ public abstract class AbstractServer implements Runnable
     {
       // Close the client sockets of the already connected clients
       Thread[] clientThreadList = getClientConnections();
-        for (Thread aClientThreadList : clientThreadList) {
-            try {
-                ((ConnectionToClient) aClientThreadList).close();
-            }
-            // Ignore all exceptions when closing clients.
-            catch (Exception ex) {
-            }
-        }
+      for (int i=0; i<clientThreadList.length; i++)
+      {
+         try
+         {
+           ((ConnectionToClient)clientThreadList[i]).close();
+         }
+         // Ignore all exceptions when closing clients.
+         catch(Exception ex) {}
+      }
       serverSocket = null;
       serverClosed();
     }
@@ -191,11 +193,13 @@ public abstract class AbstractServer implements Runnable
   {
     Thread[] clientThreadList = getClientConnections();
 
-    for (Thread aClientThreadList : clientThreadList) {
-      try {
-        ((ConnectionToClient) aClientThreadList).sendToClient(msg);
-      } catch (Exception ex) {
+    for (int i=0; i<clientThreadList.length; i++)
+    {
+      try
+      {
+        ((ConnectionToClient)clientThreadList[i]).sendToClient(msg);
       }
+      catch (Exception ex) {}
     }
   }
 
@@ -380,7 +384,7 @@ public abstract class AbstractServer implements Runnable
    * synchronized.
    *
    * @param client the client that raised the exception.
-   * @param exception the exception thrown.
+   * @param Throwable the exception thrown.
    */
   synchronized protected void clientException(
     ConnectionToClient client, Throwable exception) {}
@@ -429,7 +433,7 @@ public abstract class AbstractServer implements Runnable
    *  sent the message.
    */
   protected abstract void handleMessageFromClient(
-    Object msg, ConnectionToClient client);
+    String msg, ConnectionToClient client);
 
 
 // METHODS TO BE USED FROM WITHIN THE FRAMEWORK ONLY ----------------
@@ -447,7 +451,7 @@ public abstract class AbstractServer implements Runnable
    *  sent the message.
    */
   final synchronized void receiveMessageFromClient(
-    Object msg, ConnectionToClient client)
+    String msg, ConnectionToClient client)
   {
     this.handleMessageFromClient(msg, client);
   }

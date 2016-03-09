@@ -9,7 +9,7 @@ public class getport extends ClientCommand {
 	@Override
 	public void doCommand() {
 		
-		getClient().clientUI().display("Currently connected to port " + getClient().getPort());
+		getClient().clientUI().display("Currently connected to port " + getClient().getPort());;
 
 	}
 

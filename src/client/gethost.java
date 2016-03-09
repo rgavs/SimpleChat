@@ -6,11 +6,11 @@ public class gethost extends ClientCommand {
 	  {
 	    super(str, client);
 	  }
-
+	
 	public void doCommand(){
-
+		
 		getClient().clientUI().display("The host is " + getClient().getHost());
-
+		
 	}
-
+	
 }

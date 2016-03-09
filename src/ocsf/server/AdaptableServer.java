@@ -4,6 +4,10 @@
 
 package ocsf.server;
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
 /**
 * The <code> AdaptableServer </code> is an adapter class
 * that extends the <code> AbstractServer </code> class in place of
@@ -117,7 +121,7 @@ class AdaptableServer extends AbstractServer
    * @param client the connection connected to the client that
    *  sent the message.
    */
-  final protected void handleMessageFromClient(Object msg,
+  final protected void handleMessageFromClient(String msg,
                                          ConnectionToClient client)
   {
     server.handleMessageFromClient(msg, client);

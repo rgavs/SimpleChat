@@ -8,10 +8,6 @@ import java.io.IOException;
  *
  * @author Chris Nevison
  * @version February 2012
- * 
- * Modified by Shouheng to allow for password protection, and to change the 
- * error message in connectionException()
- * February 28 2016
  */
 public class login extends NotConnectedClientCommand
 {
@@ -21,32 +17,18 @@ public class login extends NotConnectedClientCommand
   }
 
   public void doCmd()
-  {	  
-	  int indexOfBlank = getStr().indexOf(' ');
-	  
-	  if(indexOfBlank == -1) {
-		  getClient().clientUI().display("Incorrect username or password.");
-		  return;
-	  } // end if
-	  String username = getStr().substring(0, indexOfBlank);
-	  String password = getStr().substring(indexOfBlank+1);
-      
-	  if(username.equals("")) {
-		  getClient().clientUI().display("Incorrect username or password.");
-		  return;
-	  }
-	  
-	  //check if password consists of blanks only
-	  
+  {
     try
     {
       getClient().openConnection();
-      getClient().sendToServer(new ServerLoginHandler(getClient().getId(), getClient().getPassword()));
+      getClient().clientUI().display("Connection to " + getClient().getHost() + " opened.");
+      getClient().sendToServer("#login " + getClient().getId());//(new ServerLoginHandler(getClient().getId()));
     }
     catch(IOException ex)
     {
       getClient().clientUI().display("Connection to " + getClient().getHost() + " failed.");
     }
   }
+
 }
 

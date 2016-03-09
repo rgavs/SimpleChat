@@ -5,7 +5,7 @@ public class setport extends ServerNotConnectedCommand{
 	public setport(String str, EchoServer1 server){
 		super(str,server);
 	}
-
+	
 	public void doCmd(){
 		try
 		{
@@ -15,10 +15,10 @@ public class setport extends ServerNotConnectedCommand{
 			getServer().serverUI().display("The port has to be a number.");
 			return;
 		}
-
+		
 		getServer().serverUI().display("Port changed to " + getServer().getPort());
-
+		
 	}
-
+	
 }
 

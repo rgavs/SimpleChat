@@ -9,22 +9,17 @@ import common.*;
 import java.io.*;
 
 /**
- * This class overrides some of the methods defined in the abstract superclass
- * in order to give more functionality to the client.
+ * This class overrides some of the methods defined in the abstract
+ * superclass in order to give more functionality to the client.
  *
- * Modified to complete exercises E50 and E51 Uses reflection to create
- * ClientCommand subclasses for each command
+ * Modified to complete exercises E50 and E51
+ * Uses reflection to create ClientCommand subclasses for each command
  *
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;
  * @author Fran&ccedil;ois B&eacute;langer
  * @author Chris Nevison
  * @version July 2012
- * 
- * 
- * Modified by Shouheng Wu to accomodate password protection for user accounts
- * February 28, 2016
- * 
  */
 public class ChatClient1 extends AbstractClient
 {
@@ -37,8 +32,6 @@ public class ChatClient1 extends AbstractClient
   private ChatIF myClientUI;
 
   String myId;
-  String myPassword;
-  String monitor;
 
   //Constructors ****************************************************
 
@@ -50,22 +43,23 @@ public class ChatClient1 extends AbstractClient
    * @param clientUI The interface type variable.
    */
 
-  public ChatClient1(String host, int port, ChatIF clientUI, String id, String password) throws IOException
+  public ChatClient1(String host, int port, ChatIF clientUI, String id)
+    throws IOException
   {
     super(host, port); //Call the superclass constructor
     myClientUI = clientUI;
     myId = id;
-    myPassword = password;
     try
     {
       openConnection();
-      sendToServer(new ServerLoginHandler(id, password));
+      sendToServer("#login " +id); //new ServerLoginHandler(id)
     }
-    catch(IOException e)
-    {
-      clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
-      quit();
-    }
+      catch(IOException e)
+      {
+        clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
+        quit();
+      }
+
   }
 
   public ChatIF clientUI()
@@ -78,17 +72,6 @@ public class ChatClient1 extends AbstractClient
     return myId;
   }
 
-  public String getMonitor() {
-    return monitor;
-  }
-
-  public void setMonitor(String name) {
-    monitor = name;
-  }
-
-  public String getPassword(){
-	  return myPassword;  
-  }
 
   //Instance methods ************************************************
 
@@ -130,14 +113,15 @@ public class ChatClient1 extends AbstractClient
   {
     if(isConnected())
     {
-      ServerStringMessageHandler mess = new ServerStringMessageHandler(message);
+      //ServerStringMessageHandler mess = new ServerStringMessageHandler(message);
       try
       {
-        sendToServer(mess);
+        sendToServer(message);//(mess);
       }
       catch(IOException e)
       {
-        clientUI().display("IOException: " + e + "\nCould not send message to server.  Terminating client.");
+        clientUI().display("IOException " + e + "\nCould not send message to server.  Terminating client.");
+        //quit();
       }
     }
     else
@@ -145,7 +129,7 @@ public class ChatClient1 extends AbstractClient
       clientUI().display("Not connected to a server. Must login before sending a message.");
     }
   }
-  
+
   /**
    * This method handles a command message after the '#' has been stripped
    * It uses reflection to create an instance of a subclass of ClientCommand whose name
@@ -182,7 +166,8 @@ public class ChatClient1 extends AbstractClient
 
   public void connectionException(Exception ex)
   {
-    clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
+    clientUI().display("Connection exception " + ex + "\nServer shut down. Terminating this client");
+    //System.exit(0);
   }
 
   public void connectionClosed()
@@ -203,4 +188,4 @@ public class ChatClient1 extends AbstractClient
     System.exit(0);
   }
 }
-// End of ChatClient class
+//End of ChatClient class

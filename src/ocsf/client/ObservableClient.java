@@ -75,7 +75,7 @@ public class ObservableClient extends Observable
    *
    *  @param msg   The message to be sent.
    */
-  final public void sendToServer(Object msg) throws IOException
+  final public void sendToServer(String msg) throws IOException
   {
     service.sendToServer(msg);
   }
