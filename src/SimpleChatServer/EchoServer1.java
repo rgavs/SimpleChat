@@ -32,8 +32,8 @@ public class EchoServer1 extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5555;
-  private ArrayList<Channel> channels;
-  private HashMap<String, String> accounts;//added by Shouheng
+    private ArrayList<Channel> channels;
+    private HashMap<String, String> accounts;//added by Shouheng
   
 
   //Constructors ****************************************************
@@ -81,18 +81,40 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    //if this message needs to be sent to monitor
+	//if this message needs to be sent to monitor
 	  if (msg.toString().contains("##")){
-	    sendToMonitor(msg);  
+		  String[] list = msg.toString().split("##");
+		  String name = list[1];
+		//some method to find the connection to client using the id name
+		  ConnectionToClient monitor = getConnection(name, getClientConnections());
+		  if (monitor != null){
+			  sendToMonitor(list[0],monitor);
+		  }
 	}
+  	  else if (msg.toString().startsWith("#checkmonitor")){
+  		  String[] list = msg.toString().split(" ");
+  		  ConnectionToClient monitor = getConnection(list[1], getClientConnections());
+  		  if (monitor == null){
+  			  try {
+  				  client.sendToClient("$$"+list[1]+" is not connected. Try another one.");
+  			}catch (Exception ex){}
+  		  }
+  		  else{
+  			try {
+				client.sendToClient("$$$"+list[1]+" will monitor for you.");
+			}
+  			catch (Exception ex){}
+  		  }
+  	  }
 	else{
 	    ServerMessageHandler handler = (ServerMessageHandler) msg;
 	    handler.setServer(this);
 	    handler.setConnectionToClient(client);
 	    handler.handleMessage();
 	}
+	  }
 	 
-  }
+  
   
   public void addChannel(Channel chl) {
 	  channels.add(chl);
@@ -124,52 +146,6 @@ public class EchoServer1 extends AbstractServer
 	
   }
   
-  /**
-   * send message only to the monitor
-   * send feedback to the client if the person who will monitor is not connected
-   * 
-   * @param msg
-   */
- public void sendToMonitor(Object msg){
-	  String[] list = msg.toString().split("##");
-	  String name = list[1];
-	  String id = list[2];
-	//some method to find the connection to client using the id name
-	  ConnectionToClient monitor;
-	  monitor = getConnection(name, getClientConnections());
-	  if (monitor != null){
-	  try{
-		 monitor.sendToClient(list[0]);
-	  }
-	  catch (Exception ex){}
-	  }
-	  else {
-		  ConnectionToClient client = getConnection(id, getClientConnections());
-		  try {
-			  client.sendToClient("The person you asked for monitoring is not connected. Try another one.");
-		  }
-		  catch (Exception ex){}
-	  }
-  }
-
-/**
-   * Returns the connection to the person who will monitor the message
-   * 
-   * @param id
-   * @param allClients
-   * @return Connection to the monitor
-   */
-  final public ConnectionToClient getConnection(String id, Thread[] allClients){
-	  for (int i =0; i < allClients.length; i++) {
-			ConnectionToClient client = (ConnectionToClient) allClients[i];
-			String username = (String) client.getInfo("id");
-			if (username.equals(id)) 
-				return client; 
-	  }
-	  return null;
-  }
-
-  
 //Written by Shouheng Wu
   //This method checks whether the given ID is already an existing user
   public boolean checkExistingAccount (String id){
@@ -199,9 +175,35 @@ public class EchoServer1 extends AbstractServer
 	  
   }//end checkPassword
   
+  public void sendToMonitor(String mess, ConnectionToClient monitor){
+	  try{
+			 monitor.sendToClient(mess);
+		  }
+		  catch (Exception ex){}
+  }
+  
+  /**
+   * Returns the connection to the person who will monitor the message
+   * 
+   * @param id
+   * @param allClients
+   * @return Connection to the monitor
+   */
+  public ConnectionToClient getConnection(String id, Thread[] allClients){
+	  for (int i = 0; i < allClients.length; i++) {
+			ConnectionToClient client = (ConnectionToClient) allClients[i];
+			String username = (String) client.getInfo("id");
+			if (username.equals(id)) 
+				return client; 
+	  }
+	  return null;
+  }
+  
   public void handleMessageFromUser(String message){
-	
-	  if(message.charAt(0) != '#')
+	  if (message.charAt(0) == '@') {
+		  //sendToChannel(message.substring(1));
+	  }
+	  else if(message.charAt(0) != '#')
 	    {
 		  sendToAllClients("SERVER MSG>" + message);
 	    }
@@ -302,4 +304,3 @@ public class EchoServer1 extends AbstractServer
   
   
 }
-
