@@ -38,6 +38,7 @@ public class ChatClient1 extends AbstractClient
 
   String myId;
   String myPassword;
+  String monitor;
 
   //Constructors ****************************************************
 
@@ -56,6 +57,7 @@ public class ChatClient1 extends AbstractClient
     myClientUI = clientUI;
     myId = id;
     myPassword = password;
+    monitor = null;                        
     try
     {
       openConnection();
@@ -82,6 +84,13 @@ public class ChatClient1 extends AbstractClient
   public String getPassword(){
 	  return myPassword;  
   }
+  public String getMonitor(){
+	  return monitor;
+  }
+  
+  public void setMonitor(String name){
+	  monitor = name;
+  }
 
   //Instance methods ************************************************
 
@@ -92,7 +101,23 @@ public class ChatClient1 extends AbstractClient
    */
   public void handleMessageFromServer(Object msg)
   {
-    clientUI().display(msg.toString());
+    //clientUI().display(msg.toString());
+//    if (msg.toString().equals("invalid monitor")){
+//    	setMonitor(null);
+//    }
+    
+    if(msg.toString().startsWith("$$$")){
+
+    	clientUI().display(msg.toString().substring(3));
+    }
+    else if(msg.toString().startsWith("$$")){
+    	setMonitor(null);
+    	clientUI().display(msg.toString().substring(2));
+    }
+    else if (!msg.toString().startsWith("$$") && getMonitor() != null){
+    	clientUI().display(msg.toString());
+    	sendMessageToServer(msg.toString()+"##"+getMonitor());
+    }
   }
 
   /**
@@ -119,7 +144,7 @@ public class ChatClient1 extends AbstractClient
    *
    * @param message The message from the UI
    */
-  private void sendMessageToServer(String message)
+  public void sendMessageToServer(String message)
   {
     if(isConnected())
     {
