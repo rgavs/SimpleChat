@@ -20,6 +20,11 @@ import java.io.*;
  * @author Fran&ccedil;ois B&eacute;langer
  * @author Chris Nevison
  * @version July 2012
+ * 
+ * 
+ * Modified by Shouheng Wu to accomodate password protection for user accounts
+ * February 28, 2016
+ * 
  */
 public class ChatClient1 extends AbstractClient
 {
@@ -32,10 +37,8 @@ public class ChatClient1 extends AbstractClient
   private ChatIF myClientUI;
 
   String myId;
-  
-  String monitor;
-  
   String myPassword;
+  String monitor;
 
   //Constructors ****************************************************
 
@@ -54,6 +57,7 @@ public class ChatClient1 extends AbstractClient
     myClientUI = clientUI;
     myId = id;
     myPassword = password;
+    monitor = null;                        
     try
     {
       openConnection();
@@ -76,7 +80,10 @@ public class ChatClient1 extends AbstractClient
   {
     return myId;
   }
-  
+
+  public String getPassword(){
+	  return myPassword;  
+  }
   public String getMonitor(){
 	  return monitor;
   }
@@ -84,11 +91,6 @@ public class ChatClient1 extends AbstractClient
   public void setMonitor(String name){
 	  monitor = name;
   }
-  
-  public String getPassword(){
-	  return myPassword;  
-  }
-
 
   //Instance methods ************************************************
 
@@ -99,10 +101,22 @@ public class ChatClient1 extends AbstractClient
    */
   public void handleMessageFromServer(Object msg)
   {
-    clientUI().display(msg.toString());
+    //clientUI().display(msg.toString());
+//    if (msg.toString().equals("invalid monitor")){
+//    	setMonitor(null);
+//    }
     
-    if (!monitor.equals(null)){
-    	sendMessageToServer(msg.toString(),getMonitor(),getId());
+    if(msg.toString().startsWith("$$$")){
+
+    	clientUI().display(msg.toString().substring(3));
+    }
+    else if(msg.toString().startsWith("$$")){
+    	setMonitor(null);
+    	clientUI().display(msg.toString().substring(2));
+    }
+    else if (!msg.toString().startsWith("$$") && getMonitor() != null){
+    	clientUI().display(msg.toString());
+    	sendMessageToServer(msg.toString()+"##"+getMonitor());
     }
   }
 
@@ -130,7 +144,7 @@ public class ChatClient1 extends AbstractClient
    *
    * @param message The message from the UI
    */
-  private void sendMessageToServer(String message)
+  public void sendMessageToServer(String message)
   {
     if(isConnected())
     {
@@ -151,28 +165,6 @@ public class ChatClient1 extends AbstractClient
     }
   }
   
-  /**
-   * This method handles messages and sent them to monitor
-   * String after "##" is the user name of the monitor
-   * @param message
-   * @param monitor
-   * @param myId
-   */
-  private void sendMessageToServer(String message, String monitor, String myId)
-  {
-      ServerStringMessageHandler mess = new ServerStringMessageHandler(message+"##"+monitor+"##"+myId);
-      try
-      {
-        sendToServer(mess);
-      }
-      catch(IOException e)
-      {
-        clientUI().display("IOException " + e + "\nCould not send message to server");
-        //quit();
-      }
-    }
-    
-
   /**
    * This method handles a command message after the '#' has been stripped
    * It uses reflection to create an instance of a subclass of ClientCommand whose name
@@ -209,8 +201,7 @@ public class ChatClient1 extends AbstractClient
 
   public void connectionException(Exception ex)
   {
-    clientUI().display("Connection exception " + ex + "\nServer shut down. Terminating this client");
-    //System.exit(0);
+    clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
   }
 
   public void connectionClosed()
