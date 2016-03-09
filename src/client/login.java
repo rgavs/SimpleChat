@@ -52,4 +52,3 @@ public class login extends NotConnectedClientCommand
   }
 
 }
-
