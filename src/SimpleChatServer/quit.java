@@ -1,9 +1,6 @@
 package SimpleChatServer;
-
 import java.io.IOException;
 
-import SimpleChatServer.ServerConsole;
-import SimpleChatServer.ServerCommand;
 
 /**
  *  Implements client command to quit, after first closing any connection to the current host.
@@ -17,7 +14,6 @@ public class quit extends ServerCommand
 
 	public void doCommand()
 	{
-
 		if(!getServer().isClosed())
 		{
 			try{
@@ -35,7 +31,5 @@ public class quit extends ServerCommand
 		}//end else
 
 		System.exit(0);
-
-
 	}
 }

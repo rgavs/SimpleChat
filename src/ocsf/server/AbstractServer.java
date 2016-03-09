@@ -5,7 +5,6 @@
 package ocsf.server;
 
 import java.net.*;
-import java.util.*;
 import java.io.*;
 
 /**
@@ -164,15 +163,14 @@ public abstract class AbstractServer implements Runnable
     {
       // Close the client sockets of the already connected clients
       Thread[] clientThreadList = getClientConnections();
-      for (int i=0; i<clientThreadList.length; i++)
-      {
-         try
-         {
-           ((ConnectionToClient)clientThreadList[i]).close();
-         }
-         // Ignore all exceptions when closing clients.
-         catch(Exception ex) {}
-      }
+        for (Thread aClientThreadList : clientThreadList) {
+            try {
+                ((ConnectionToClient) aClientThreadList).close();
+            }
+            // Ignore all exceptions when closing clients.
+            catch (Exception ex) {
+            }
+        }
       serverSocket = null;
       serverClosed();
     }
@@ -193,13 +191,11 @@ public abstract class AbstractServer implements Runnable
   {
     Thread[] clientThreadList = getClientConnections();
 
-    for (int i=0; i<clientThreadList.length; i++)
-    {
-      try
-      {
-        ((ConnectionToClient)clientThreadList[i]).sendToClient(msg);
+    for (Thread aClientThreadList : clientThreadList) {
+      try {
+        ((ConnectionToClient) aClientThreadList).sendToClient(msg);
+      } catch (Exception ex) {
       }
-      catch (Exception ex) {}
     }
   }
 
@@ -384,7 +380,7 @@ public abstract class AbstractServer implements Runnable
    * synchronized.
    *
    * @param client the client that raised the exception.
-   * @param Throwable the exception thrown.
+   * @param exception the exception thrown.
    */
   synchronized protected void clientException(
     ConnectionToClient client, Throwable exception) {}

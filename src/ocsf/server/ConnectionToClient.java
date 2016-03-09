@@ -63,7 +63,7 @@ public class ConnectionToClient extends Thread
    * information about each client. Used by the setInfo and getInfo
    * methods.
    */
-  private HashMap savedInfo = new HashMap(10);
+  private HashMap<String, Object> savedInfo = new HashMap<String, Object>(10);
 
 
 // CONSTRUCTORS *****************************************************
@@ -78,8 +78,7 @@ public class ConnectionToClient extends Thread
    * @exception IOException if an I/O error occur when creating
    *        the connection.
    */
-  ConnectionToClient(ThreadGroup group, Socket clientSocket,
-    AbstractServer server) throws IOException
+  ConnectionToClient(ThreadGroup group, Socket clientSocket, AbstractServer server) throws IOException
   {
     super(group,(Runnable)null);
     // Initialize variables
@@ -99,7 +98,6 @@ public class ConnectionToClient extends Thread
         closeAll();
       }
       catch (Exception exc) { }
-
       throw ex;  // Rethrow the exception.
     }
 
@@ -120,7 +118,6 @@ public class ConnectionToClient extends Thread
   {
     if (clientSocket == null || output == null)
       throw new SocketException("socket does not exist");
-
     output.writeObject(msg);
   }
 
@@ -134,13 +131,10 @@ public class ConnectionToClient extends Thread
   final public void close() throws IOException
   {
     readyToStop = true; // Set the flag that tells the thread to stop
-
-    try
-    {
+    try {
       closeAll();
     }
-    finally
-    {
+    finally {
       server.clientDisconnected(this);
     }
   }
@@ -227,7 +221,6 @@ public class ConnectionToClient extends Thread
           closeAll();
         }
         catch (Exception ex) { }
-
         server.clientException(this, exception);
       }
     }

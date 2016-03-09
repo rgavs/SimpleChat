@@ -3,8 +3,6 @@ package SimpleChatServer;
 import java.io.*;
 import common.ChatIF;
 
-import SimpleChatClient.ClientConsole;
-
 public class ServerConsole implements ChatIF{
 	
 	final public static int DEFAULT_PORT = 5555;
@@ -22,38 +20,33 @@ public class ServerConsole implements ChatIF{
 	}//end ServerConsole()
 	
 	public void accept(){
-		
 		try{
 			BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
 			String message;
-			
 			while (true)
 		      {
 		        message = fromConsole.readLine();
 		        server.handleMessageFromUser(message);
 		      }
-			
 		}catch (Exception ex){
 		      System.out.println
 		        ("Unexpected error while reading from console!");
 		}//end try-catch block
-			
-		
 	}//end accept()
 
 	public EchoServer1 getServer() {
 		return server;
 	}
-	
+
 	public void display(String message)
 	{
 	  System.out.println("> " + message);
 	}//end display()
-	
+
 	public static void main(String[] args)
 	  {
 	    int port = 0;  //The port number
-	    
+    
 	    try
 	    {
 	      port = Integer.parseInt(args[0]); //Get port from command line

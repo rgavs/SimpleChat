@@ -1,9 +1,6 @@
 package SimpleChatServer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -24,9 +21,12 @@ public class Channel {
 	
 	/**
 	 * Server to which the channel belongs
-	 * 
 	 */
 	private AbstractServer server;
+
+	/**
+	 * Blocks/exclusions in where to send messages 
+     */
 	
 	public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
 		server = thisServer;
@@ -40,17 +40,15 @@ public class Channel {
 		Thread[] allClients = thisServer.getClientConnections();
 		clients = new ArrayList<ConnectionToClient>(users.length);
 		setupChannelUsers(users, allClients);
-
 	}
 	
 	/**
-	 * 
 	 * @param users Array of type String of usernames 
 	 * @param allClients Array of all ConnectionToClient clients
 	 */
 	private void setupChannelUsers(String[] users, Thread[] allClients) {
-		for (int i=0; i<users.length; i++){
-			System.out.println(users[i]);
+		for (String user1 : users) {
+			System.out.println(user1);
 		}
 		here: for (int i = 0; i<users.length; i++) {
 			for (int k =0; i < allClients.length; k++) {
@@ -67,28 +65,25 @@ public class Channel {
 				}
 			}	
 		}
-		for (int i=0; i<clients.size(); i++){
-			System.out.println(clients.get(i));
+		for (ConnectionToClient client : clients) {
+			System.out.println(client);
 		}
-	
 	}
 	
 	/**
 	 * Parses the string from the user for the name of the channel and returns it.
-	 * @param stringFromUser
+	 * @param str	from user
 	 * @return names of the channel
 	 */
-	private String setupChannelName(String stringFromUser) {
-		int comma = stringFromUser.indexOf(',');
-		String channelName = stringFromUser.substring(0,comma);
-		return channelName;
+	private String setupChannelName(String str) {
+		return str.split(",")[0];
 	}
 	
 	/**
 	 * Takes the string from a user and parses it for the username of each user 
 	 * within the string.
-	 * @param stringFromUser 
-	 * @return array of strings with usernames 
+	 * @param stringFromUser comma-separated list of usernames
+	 * @return	array of strings with usernames
 	 */
 	private String[] parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
 		int index = stringFromUser.indexOf(","); //start after first comma, string before first comma should be channel name
@@ -110,7 +105,7 @@ public class Channel {
 		return channelName;
 	}
 	
-	public int numOfClients(){
+	public int numClients(){
 		return clients.size();
 	}
 	
@@ -119,8 +114,6 @@ public class Channel {
 	}
 	
 	public Object[] enumerateClients() {
-		Object[] newArray = clients.toArray();//Arrays.copyOf(clients, clients.length);
-		return newArray;
+		return clients.toArray();
 	}
-	
 }

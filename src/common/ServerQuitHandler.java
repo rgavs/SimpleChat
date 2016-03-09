@@ -1,9 +1,5 @@
 package common;
 
-import ocsf.server.*;
-
-import java.io.*;
-
 public class ServerQuitHandler extends ServerMessageHandler{
 	private String myId;
 
