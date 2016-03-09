@@ -81,13 +81,40 @@ public class EchoServer1 extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
 	  
-    ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-    handler.setMessage((String)msg);
-    handler.setServer(this);
-    handler.setConnectionToClient(client);
-    handler.handleMessage();
+	//if this message needs to be sent to monitor
+	  if (msg.toString().contains("##")){
+		  String[] list = msg.toString().split("##");
+		  String name = list[1];
+		//some method to find the connection to client using the id name
+		  ConnectionToClient monitor = getConnection(name, getClientConnections());
+		  if (monitor != null){
+			  sendToMonitor(list[0],monitor);
+		  }
+	}
+  	  else if (msg.toString().startsWith("#checkmonitor")){
+  		  String[] list = msg.toString().split(" ");
+  		  ConnectionToClient monitor = getConnection(list[1], getClientConnections());
+  		  if (monitor == null){
+  			  try {
+  				  client.sendToClient("$$"+list[1]+" is not connected. Try another one.");
+  			}catch (Exception ex){}
+  		  }
+  		  else{
+  			try {
+				client.sendToClient("$$$"+list[1]+" will monitor for you.");
+			}
+  			catch (Exception ex){}
+  		  }
+  	  }
+	else{
+	    ServerMessageHandler handler = (ServerMessageHandler) msg;
+	    handler.setServer(this);
+	    handler.setConnectionToClient(client);
+	    handler.handleMessage();
+	}
+	  }
 	 
-  }
+  
   
   public void addChannel(Channel chl) {
 	  channels.add(chl);
@@ -148,9 +175,33 @@ public class EchoServer1 extends AbstractServer
 	  
   }//end checkPassword
   
+  public void sendToMonitor(String mess, ConnectionToClient monitor){
+	  try{
+			 monitor.sendToClient(mess);
+		  }
+		  catch (Exception ex){}
+  }
+  
+  /**
+   * Returns the connection to the person who will monitor the message
+   * 
+   * @param id
+   * @param allClients
+   * @return Connection to the monitor
+   */
+  public ConnectionToClient getConnection(String id, Thread[] allClients){
+	  for (int i = 0; i < allClients.length; i++) {
+			ConnectionToClient client = (ConnectionToClient) allClients[i];
+			String username = (String) client.getInfo("id");
+			if (username.equals(id)) 
+				return client; 
+	  }
+	  return null;
+  }
+  
   public void handleMessageFromUser(String message){
 	  if (message.charAt(0) == '@') {
-		  sendToChannel(message.substring(1));
+		  //sendToChannel(message.substring(1));
 	  }
 	  else if(message.charAt(0) != '#')
 	    {
