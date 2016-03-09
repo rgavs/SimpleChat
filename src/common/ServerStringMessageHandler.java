@@ -1,7 +1,5 @@
 package common;
 
-import java.io.*;
-
 /**
  *  This class defines a message handler to simple request that a String be displayed.
  */

@@ -50,8 +50,7 @@ public class ChatClient1 extends AbstractClient
    * @param clientUI The interface type variable.
    */
 
-  public ChatClient1(String host, int port, ChatIF clientUI, String id, String password)
-    throws IOException
+  public ChatClient1(String host, int port, ChatIF clientUI, String id, String password) throws IOException
   {
     super(host, port); //Call the superclass constructor
     myClientUI = clientUI;
@@ -62,12 +61,11 @@ public class ChatClient1 extends AbstractClient
       openConnection();
       sendToServer(new ServerLoginHandler(id, password));
     }
-      catch(IOException e)
-      {
-        clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
-        quit();
-      }
-
+    catch(IOException e)
+    {
+      clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
+      quit();
+    }
   }
 
   public ChatIF clientUI()
