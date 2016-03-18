@@ -23,7 +23,7 @@ public abstract class ServerNotConnectedCommand extends ServerCommand
 		}
 		else
 		{
-			getServer().getConsole().display("Currently Online.\n Cannot  execute command.");
+			getServer().serverUI().display("Currently Online.\n Cannot  execute command.");
 		}
 	}
 

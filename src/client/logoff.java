@@ -2,8 +2,6 @@ package client;
 
 import java.io.IOException;
 
-import common.ServerLoginHandler;
-
 //import common.*;
 
 public class logoff extends ClientCommand {

@@ -1,33 +1,32 @@
-# LAB2_COMMENTS
+440 lab2 comments - Wang, Penn, JWu, SWu  73
 
-TODO:
 Client
 Spec says connectionClosed should shut down client. Reasonable to not do this, since client could try to connect to a different server.
 
-jetport, get host, seaport are good
+getport, get host, setport are good
 
--2 in setHost, no need for doCommand!
+-2 in setHost, no need for doCommand! X
 
--3 logoff: no need for ServerLogoffHandler - this can be done in server-side clientDisconnected method.  Why get host in catch clause??
-
+-3 logoff: no need for ServerLogoffHandler - this can be done in server-side clientException method.  Why gethost in catch clause?? X
 
 Server
--5 closed attribute and all the methods using it should not be You have isListening in AbstractServer and this should be used for most of this.
+-3 in handleMessageFromClient no need to check isClosed — cannot be called when server is closed. X
 
--3 in HandleMessage - no check needed and no message “server is closed”
--3 Server should have ChatIF, not ServerConsole, so a GUI could be added later
+-3 in HandleMessage - no check needed and no message “server is closed” In fact this prevents the server-user from resetting the port then reopening the server with start X
 
-serverStopped is only for appropriate messages - it is called when stopListening happens, so should not call stopListening
+-2 in start should be no call to handleMesssageFromUser — just use display! X
+
+-3 Server should have ChatIF, not ServerConsole, so a GUI could be added later X
+
+serverStopped is only for appropriate messages (or to set closed) - it is called when stopListening happens, so should not call stopListening
 
 No need for EchoServer main - it is started by the ServerConsole
--3 ServerConsole should pass itself to the EchoServer constructor, which should take a ChatIF parameter
+-3 ServerConsole should pass itself to the EchoServer constructor, which should take a ChatIF parameter X
 
-getport, seaport good
+getport, setport good
 
--3 ServerNotConnectedCommand should check no clients and not isListening
+-2 start and stop should not have messages, these should be in serverStarted and serverStopped hook methods. X
 
--3 start and stop should not have messages, these should be in serverStarted and serverStopped hook methods. Use isListening, not closed
+-3 close and quit  must stop listening and close port, using server close method. Should not call handleMessageFromUser 
 
--3 close and quit  must stop listening and close port, using server close method.
-
--9 did no override AbstractServer methods clientConnected, clientDisconnected and clientException as indicated in E49.
+-3 did no override AbstractServer methods clientException as indicated in E49. X

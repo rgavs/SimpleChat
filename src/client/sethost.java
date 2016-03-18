@@ -9,9 +9,6 @@ public class sethost extends NotConnectedClientCommand {
 		super(str,client);
 	}
 
-	public void doCommand(){
-		super.doCommand();
-	}
 
 	@Override
 	public void doCmd() {

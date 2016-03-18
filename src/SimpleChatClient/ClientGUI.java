@@ -29,6 +29,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
+/**
+ * Modified by Shouheng Wu to accomodate password feature, and to
+ * provide a default guest user that can be used to create new accounts
+ * February 28, 2016
+ * 
+ */
+
+
 package SimpleChatClient;
 
 /* TextDemo.java requires no other files. */
@@ -55,9 +63,17 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
     /**
      * The instance of the client created by this ClientGUI.
      */
-    ChatClient1 client;
 
-    public ClientGUI(String host, int port, String id) {
+    ChatClient1 client;
+    
+    /**
+     * The default(guest) user account and password.
+     */
+    
+    final public static String DEFAULT_ID = "guest";
+    final public static String DEFAULT_PASSWORD = "123";
+
+    public ClientGUI(String host, int port, String id, String pwd) {
         super(new GridBagLayout());
 
         textField = new JTextField(20);
@@ -81,7 +97,7 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
         
         try
         {
-          client= new ChatClient1(host, port, this, id);
+          client= new ChatClient1(host, port, this, id, pwd);
         }
         catch(IOException exception)
         {
@@ -111,13 +127,13 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI(String host, int port, String id) {
+    private static void createAndShowGUI(String host, int port, String id, String pwd) {
         //Create and set up the window.
         JFrame frame = new JFrame("Chat");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add contents to the window.
-        frame.add(new ClientGUI(host, port, id));
+        frame.add(new ClientGUI(host, port, id, pwd));
 
         //Display the window.
         frame.pack();
@@ -128,26 +144,31 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
         final String host;
         int port = 0;  //The port number
         String idIn = "";
+        String pwdIn = "";
         final String id;
+        final String pwd;
 
         host = "localhost";
         try
         {
           idIn = args[0];
+          pwdIn = args[1];
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
-          System.out.println("No id provided, can't login.");
-          System.exit(-1);
+          System.out.println("Logging in with default id and password");//changed by Shouheng Wu
+          idIn = DEFAULT_ID;
+          pwdIn = DEFAULT_PASSWORD;
         }
         
         id = idIn;
+        pwd = pwdIn;
         
     	//Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI(host, DEFAULT_PORT, id);
+                createAndShowGUI(host, DEFAULT_PORT, id, pwd);
             }
        });
     }
