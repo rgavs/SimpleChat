@@ -15,8 +15,8 @@ import common.*;
  *  message itself.
  *
  * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Dr Robert Laganiegravere
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @author Chris Nevison
  * @version February 2012
@@ -32,7 +32,6 @@ public class EchoServer1 extends AbstractServer
     final public static int DEFAULT_PORT = 5555;
     private ArrayList<Channel> channels;
     private HashMap<String, String> accounts;//added by Shouheng
-
 
   //Constructors ****************************************************
 
@@ -78,7 +77,7 @@ public class EchoServer1 extends AbstractServer
   public void handleMessageFromClient(Object msg, ConnectionToClient client)
   {
       ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-      handler.setMessage((String) msg);
+      handler.setMessage(msg.toString());
       handler.setServer(this);
       handler.setConnectionToClient(client);
       handler.handleMessage();
@@ -89,14 +88,13 @@ public class EchoServer1 extends AbstractServer
   }
 
   private void sendToChannelClients(Object msg, String channel) {
-	  for (int j = 0; j < channels.size(); j++) {
-		  Channel chl = channels.get(j);
-		  if (chl.getChannelName().equals(channel)) {
-			  Object[] channelClients = chl.enumerateClients();
+	  for (Channel chan : channels) {
+		  if (chan.getChannelName().equals(channel)) {
+			  Object[] channelClients = chan.enumerateClients();
 			  for (int i=0; i<channelClients.length; i++)
               {
                   try {
-			        ((ConnectionToClient)channelClients[i]).sendToClient("Server MSG "+ chl.getChannelName()+"> "+msg);
+			        ((ConnectionToClient)channelClients[i]).sendToClient("Server MSG "+ chan.getChannelName()+"> "+msg);
 			      }
 			      catch (Exception ex) {
 			    	  serverUI().display("Error in sending message");
@@ -118,7 +116,7 @@ public class EchoServer1 extends AbstractServer
   }//end checkExistingAccount
 
   //Written by Shouheng Wu
-  //This method creates a user account by adding a id/password combination to the hashmap accounts
+  //This method creates a user account by adding a id/password combination to the HashMap accounts
   public void setNewAccount(String id, String password){
 	  accounts.put(id, password);
   }//end class
