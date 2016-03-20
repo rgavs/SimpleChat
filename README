@@ -1,4 +1,4 @@
 # README
-SimpleChat      https://travis-ci.org/rgavs/SimpleChat.svg?branch=master
+[![Build Status]https://travis-ci.org/rgavs/SimpleChat.svg?branch=master[Build Status]
 
 Simple Object-Oriented Chat Client written in Java
