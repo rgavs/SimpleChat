@@ -16,13 +16,14 @@ import java.io.*;
  * ClientCommand subclasses for each command
  *
  * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Dr Robert Laganiegrave
+ * @author Franccedilois Beacutelanger
  * @author Chris Nevison
  * @version July 2012
- * 
- * 
- * Modified by Shouheng Wu to accomodate password protection for user accounts
+ */
+
+/**
+ * Modified by Shouheng Wu to accommodate password protection for user accounts
  * February 28, 2016
  */
 public class ChatClient1 extends AbstractClient
