@@ -1,7 +1,8 @@
 package SimpleChatServer;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import ocsf.server.*;
 import common.*;
@@ -15,7 +16,7 @@ import common.*;
  *
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Laganiegravere
- * @author Franccedilois Beacutelanger
+ * @author Fran&ccedilois Beacutelanger
  * @author Paul Holden
  * @author Chris Nevison
  * @version February 2012
@@ -27,10 +28,9 @@ public class EchoServer1 extends AbstractServer {
     /**
      * The default port to listen on.
      */
-    final public static int DEFAULT_PORT = 5555;
+    final public static int DEFAULT_PORT = 5555; // TODO find where this is used ?
     private ArrayList<Channel> channels;
     private HashMap<String, String> accounts;//added by Shouheng
-    private HashMap<String, ArrayList<String>> blocks;
 
 
     //Constructors ****************************************************
@@ -74,7 +74,7 @@ public class EchoServer1 extends AbstractServer {
      */
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
         ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-        handler.setMessage((String) msg);
+        handler.setMessage(msg.toString());
         handler.setServer(this);
         handler.setConnectionToClient(client);
         handler.handleMessage();
@@ -166,54 +166,6 @@ public class EchoServer1 extends AbstractServer {
         }
 
     }//end createAndDoCommand
-
-    /**
-     * @param user   username of client seeking to create block(s)
-     * @param others username(s) of clients to block
-     * @author rgavs
-     */
-    public void addBlock(String user, String[] others) {
-        if (blocks.isEmpty())
-            blocks = new HashMap<>();
-        else if (!blocks.containsKey(user)) {
-            ArrayList<String> usernames = new ArrayList<>();
-            for (String uname : others) {
-                usernames.add(uname);
-            }
-            blocks.put(user, usernames);
-        }
-    }
-
-    /**
-     * @param user   username of client seeking to remove block(s)
-     * @param others username(s) of clients to block
-     * @author rgavs
-     */
-    public void removeBlock(String user, String[] others) throws NullPointerException {
-        if (blocks.isEmpty() || !blocks.containsKey(user)){
-            throw new NullPointerException("Username "+user+"currently has no blocks; cannot remove block on "+others.toString());
-        }
-        else{
-            ArrayList userBlocks = blocks.get(user);
-            for(String uname : others){
-                userBlocks.remove(uname);
-            }
-        }
-    }
-
-    /**
-     * @param user      client seeking to see blocks - only shows blocks that person has
-     *
-     * @TODO determine how to return or display list of usernames ==> should blocks group be moved to Channel class?
-     */
-    public void listBlocks(String user) throws NullPointerException{
-        if (blocks.isEmpty() || !blocks.containsKey(user)){
-            throw new NullPointerException("Username "+user+"currently has no blocks; cannot remove blocks.");
-        }
-        else{
-
-        }
-    }
 
     /**
      * This method overrides the one in the superclass.  Called

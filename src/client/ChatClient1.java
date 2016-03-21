@@ -24,7 +24,6 @@ import java.io.*;
  * 
  * Modified by Shouheng Wu to accomodate password protection for user accounts
  * February 28, 2016
- * 
  */
 public class ChatClient1 extends AbstractClient
 {
@@ -118,7 +117,6 @@ public class ChatClient1 extends AbstractClient
       message = message.substring(1);
       createAndDoCommand(message);
     }
-
   }
 
   /**
