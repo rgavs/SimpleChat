@@ -1,8 +1,7 @@
 package SimpleChatServer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import ocsf.server.*;
 import common.*;
@@ -16,7 +15,7 @@ import common.*;
  *
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Laganiegravere
- * @author Fran&ccedilois Beacutelanger
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @author Chris Nevison
  * @version February 2012
@@ -28,10 +27,9 @@ public class EchoServer1 extends AbstractServer {
     /**
      * The default port to listen on.
      */
-    final public static int DEFAULT_PORT = 5555; // TODO find where this is used ?
+    final public static int DEFAULT_PORT = 5555;
     private ArrayList<Channel> channels;
     private HashMap<String, String> accounts;//added by Shouheng
-
 
     //Constructors ****************************************************
 
@@ -85,13 +83,12 @@ public class EchoServer1 extends AbstractServer {
     }
 
     private void sendToChannelClients(Object msg, String channel) {
-        for (int j = 0; j < channels.size(); j++) {
-            Channel chl = channels.get(j);
+        for (Channel chl : channels) {
             if (chl.getChannelName().equals(channel)) {
                 Object[] channelClients = chl.enumerateClients();
-                for (int i = 0; i < channelClients.length; i++) {
+                for (Object channelClient : channelClients) {
                     try {
-                        ((ConnectionToClient) channelClients[i]).sendToClient("Server MSG " + chl.getChannelName() + "> " + msg);
+                        ((ConnectionToClient) channelClient).sendToClient("Server MSG " + chl.getChannelName() + "> " + msg);
                     } catch (Exception ex) {
                         serverUI().display("Error in sending message");
                     }

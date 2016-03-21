@@ -23,9 +23,9 @@ import java.net.*;
 *
 * Project Name: OCSF (Object Client-Server Framework)<p>
 *
-* @author Dr. Robert Lagani&egrave;re
+* @author Dr. Robert Laganiegravere
 * @author Dr. Timothy C. Lethbridge
-* @author Fran&ccedil;ois  B&eacutel;langer
+* @author Franccedilois  Beacutellanger
 * @author Paul Holden
 * @version February 2001 (2.12)
 */
