@@ -76,7 +76,7 @@ public class EchoServer1 extends AbstractServer
    */
   public void handleMessageFromClient(Object msg, ConnectionToClient client)
   {
-      ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
+      ServerStringMessageHandler handler = (ServerStringMessageHandler) msg;
       handler.setMessage(msg.toString());
       handler.setServer(this);
       handler.setConnectionToClient(client);
