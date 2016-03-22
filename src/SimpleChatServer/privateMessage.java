@@ -2,6 +2,8 @@ package SimpleChatServer;
 
 import ocsf.server.ConnectionToClient;
 
+//import java.util.ArrayList; 
+
 public class privateMessage extends ServerCommand {
 
     public privateMessage(String str, EchoServer1 server) {

@@ -1,7 +1,8 @@
 package SimpleChatServer;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import ocsf.server.*;
 import common.*;
@@ -81,14 +82,18 @@ public class EchoServer1 extends AbstractServer {
     public void addChannel(Channel chl) {
         channels.add(chl);
     }
+    
+    public ArrayList<Channel> enumerateChannels() {
+        return channels;
+    }
 
     private void sendToChannelClients(Object msg, String channel) {
-        for (Channel chl : channels) {
-            if (chl.getChannelName().equals(channel)) {
-                Object[] channelClients = chl.enumerateClients();
-                for (Object channelClient : channelClients) {
+        for (Channel chan : channels) {
+            if (chan.getChannelName().equals(channel)) {
+                ArrayList<ConnectionToClient> channelClients = chan.enumerateClients();
+                for (ConnectionToClient channelClient : channelClients) {
                     try {
-                        ((ConnectionToClient) channelClient).sendToClient("Server MSG " + chl.getChannelName() + "> " + msg);
+                        channelClient.sendToClient("Server MSG " + chan.getChannelName() + "> " + msg);
                     } catch (Exception ex) {
                         serverUI().display("Error in sending message");
                     }
@@ -108,7 +113,7 @@ public class EchoServer1 extends AbstractServer {
     }//end checkExistingAccount
 
     //Written by Shouheng Wu
-    //This method creates a user account by adding a id/password combination to the hashmap accounts
+    //This method creates a user account by adding a id/password combination to the HashMap accounts
     public void setNewAccount(String id, String password) {
         accounts.put(id, password);
     }//end class
@@ -198,7 +203,6 @@ public class EchoServer1 extends AbstractServer {
 
     protected synchronized void clientConnected(ConnectionToClient client) {
         sendToAllClients("SERVER MSG> A client has connected.");
-
     }//end clientConnected
 
     protected synchronized void clientDisconnected(ConnectionToClient client) {

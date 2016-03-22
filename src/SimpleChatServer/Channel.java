@@ -1,6 +1,6 @@
 package SimpleChatServer;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -16,6 +16,11 @@ public class Channel {
     private ArrayList<ConnectionToClient> clients;
 
     /**
+     * Plaintext user names, only created from parse usernames
+     */
+    private ArrayList<String> usernames;
+
+    /**
      * Name of the channel given by integer.
      */
     private String channelName;
@@ -28,9 +33,8 @@ public class Channel {
     /**
      * Blocks/exclusions in where to send messages
      */
-    private Map<ConnectionToClient, Set<ConnectionToClient>> blocks;
 
-    public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients){
+    public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
         server = thisServer;
         this.channelName = channelName;
         clients = myClients;
@@ -38,9 +42,9 @@ public class Channel {
 
     public Channel(String stringFromUser, AbstractServer thisServer) {
         channelName = setupChannelName(stringFromUser);
-        String[] users = parseChannelUsers(stringFromUser);
+        ArrayList users = parseChannelUsers(stringFromUser);
         Thread[] allClients = thisServer.getClientConnections();
-        clients = new ArrayList<ConnectionToClient>(users.length);
+        clients = new ArrayList<ConnectionToClient>(users.size());
         setupChannelUsers(users, allClients);
     }
 
@@ -48,16 +52,16 @@ public class Channel {
      * @param users      Array of type String of usernames
      * @param allClients Array of all ConnectionToClient clients
      */
-    private void setupChannelUsers(String[] users, Thread[] allClients) {
+    private void setupChannelUsers(ArrayList<String> users, Thread[] allClients) {
         for (String user1 : users) {
             System.out.println(user1);
         }
         here:
-        for (int i = 0; i < users.length; i++) {
+        for (int i = 0; i < users.size(); i++) {
             for (int k = 0; i < allClients.length; k++) {
                 ConnectionToClient client = (ConnectionToClient) allClients[k];
                 String username = (String) client.getInfo("id");
-                String user = users[i];
+                String user = users.get(i);
                 if (user == null)
                     break here;
                 else {
@@ -90,20 +94,20 @@ public class Channel {
      * @param stringFromUser comma-separated list of usernames
      * @return array of strings with usernames
      */
-    private String[] parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
-        int index = stringFromUser.indexOf(","); //start after first comma, string before first comma should be channel name
-        String[] users = new String[15];
-        int count = 0;
-        while (index < stringFromUser.lastIndexOf(",")) {
-            int end = stringFromUser.indexOf(",", index + 1);
-            String user = stringFromUser.substring(index + 1, end);
-            users[count] = user;
-            count++;
-            index = end;
+    private ArrayList<String> parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
+        if (usernames.size() < 0 )
+            usernames = new ArrayList<>();
+        String[] unames = stringFromUser.split(", ");
+        for (String user : unames) {
+            usernames.add(user);
         }
-        if (index != stringFromUser.length()) //must be one more user eg. user1, user2, user 3 ->user 3 left out of while loop
-            users[count] = stringFromUser.substring(index + 1, stringFromUser.length());
-        return users;
+        return usernames;
+    }
+
+    private Boolean removeClient(String user) {
+        if(!usernames.contains(user))
+            return false;
+        return usernames.remove(user);
     }
 
     public String getChannelName() {
@@ -118,7 +122,7 @@ public class Channel {
         return server;
     }
 
-    public Object[] enumerateClients() {
-        return clients.toArray();
+    public ArrayList<ConnectionToClient> enumerateClients() {
+        return clients;
     }
 }

@@ -218,7 +218,7 @@ public abstract class AbstractServer implements Runnable
    * concrete subclasses to implement messages that do something with
    * each connection (e.g. kill it, send a message to it etc.).
    * Remember that after this array is obtained, some clients
-   * in this might disconnect. New clients can also connect,
+   * in this migth disconnect. New clients can also connect,
    * these later will not appear in the array.
    *
    * @return an array of <code>Thread</code> containing

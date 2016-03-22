@@ -27,7 +27,6 @@ import java.io.*;
  * Modified by Shouheng Wu to accommodate password protection for user accounts
  * February 28, 2016
  */
-
 public class ChatClient1 extends AbstractClient {
     //Instance variables **********************************************
 
@@ -46,8 +45,8 @@ public class ChatClient1 extends AbstractClient {
     /**
      * Constructs an instance of the chat client.
      *
-     * @param host     The server to connect to.
-     * @param port     The port number to connect on.
+     * @param host The server to connect to.
+     * @param port The port number to connect on.
      * @param clientUI The interface type variable.
      */
 
