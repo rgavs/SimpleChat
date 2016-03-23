@@ -8,16 +8,15 @@ public class leaveChannel extends ServerCommand {
 
     @Override
     public void doCommand() { //#leaveChannel user channel 
-        String str = getStr();
-        ((Channel) (str.split(" ")[2])). str.split(" ").[1]
-        int indexBlank = str.indexOf(" ");
-        String user = str.substring(0, indexBlank);
-        String channelName = str.substring(indexBlank + 1);
-        Channel chl = getServer().getChannel(channelName);
         try {
-            chl.removeClient(user);
+            String[] strs = getStr().split(" ");
+            for (Channel chan : getServer().enumerateChannels()) {
+                if (chan.getChannelName() == strs[2]) {
+                    chan.removeClient(strs[1]);
+                }
+            }
         } catch (Exception e) {
-            getServer().serverUI().display("Error in leaving channel");
+            getServer().serverUI().display("Error leaving channel");
         }
     }
 }

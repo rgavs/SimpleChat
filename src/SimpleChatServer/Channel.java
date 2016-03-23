@@ -84,7 +84,7 @@ public class Channel {
      * @return names of the channel
      */
     private String setupChannelName(String str) {
-        return str.split(",")[0];
+        return channelName = str.split(",")[0];
     }
 
     /**
@@ -104,7 +104,7 @@ public class Channel {
         return usernames;
     }
 
-    private Boolean removeClient(String user) {
+    public Boolean removeClient(String user) {
         if(!usernames.contains(user))
             return false;
         return usernames.remove(user);
