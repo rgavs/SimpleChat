@@ -18,7 +18,7 @@ public class Channel {
     /**
      * Plaintext user names, only created from parse usernames
      */
-    private ArrayList<String> usernames;
+    private ArrayList<String> usernames;    // TODO decide if ArrayList<String> usernames is necessary
 
     /**
      * Name of the channel given by integer.
@@ -72,6 +72,20 @@ public class Channel {
             }
         }
         clients.forEach(System.out::println);
+    }
+
+    /**
+     * Finds ClientConnection, casts to ConnectionToClient, and adds to <code>users</code> and <code>clients</code>.
+     */
+    public void addClient(String client){
+        for (Thread thr : getServer().getClientConnections()){
+            if (((ConnectionToClient) thr).getInfo("id").equals(client)){
+                clients.add((ConnectionToClient) thr);
+                System.out.println(client+" successfully added to Channel!");
+                return;
+            }
+        }
+        System.out.println(client+" was unable to be found. Channel clients remain unchanged");
     }
 
     /**
