@@ -1,6 +1,7 @@
 package SimpleChatServer;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -85,6 +86,15 @@ public class EchoServer1 extends AbstractServer {
     
     public ArrayList<Channel> enumerateChannels() {
         return channels;
+    }
+    
+    public Channel getChannel(String chan) {
+        for(Channel chl : channels){
+            if (chl.getChannelName() == chan)
+                return chl;
+        }
+        serverUI().display("Requested channel " + chan + " does not exist!");
+        return null;
     }
 
     private void sendToChannelClients(Object msg, String channel) {

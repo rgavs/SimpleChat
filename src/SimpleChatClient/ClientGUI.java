@@ -27,13 +27,12 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /**
  * Modified by Shouheng Wu to accomodate password feature, and to
  * provide a default guest user that can be used to create new accounts
  * February 28, 2016
- * 
  */
 
 
@@ -54,22 +53,22 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
     protected JTextField textField;
     protected JTextArea textArea;
     private final static String newline = "\n";
-    
+
     /**
      * The default port to connect on.
      */
     final public static int DEFAULT_PORT = 5555;
-    
+
     /**
      * The instance of the client created by this ClientGUI.
      */
 
     ChatClient1 client;
-    
+
     /**
      * The default(guest) user account and password.
      */
-    
+
     final public static String DEFAULT_ID = "guest";
     final public static String DEFAULT_PASSWORD = "123";
 
@@ -94,16 +93,12 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
         c.weightx = 1.0;
         c.weighty = 1.0;
         add(scrollPane, c);
-        
-        try
-        {
-          client= new ChatClient1(host, port, this, id, pwd);
-        }
-        catch(IOException exception)
-        {
-          display("Error: Can't setup connection!\n"
-                    + " Terminating client.");
-          System.exit(1);
+
+        try {
+            client = new ChatClient1(host, port, this, id, pwd);
+        } catch (IOException exception) {
+            display("Error: Can't setup connection!\n Terminating client.");
+            System.exit(1);
         }
         display("connected to " + host + "-" + port);
     }
@@ -113,10 +108,9 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
         client.handleMessageFromClientUI(message);
         textField.setText("");
     }
-    
-    public void display(String message)
-    {
-        textArea.append("> " + message + newline);    	
+
+    public void display(String message) {
+        textArea.append("> " + message + newline);
         //Make sure the new text is visible, even if there
         //was a selection in the text area.
         textArea.setCaretPosition(textArea.getDocument().getLength());
@@ -149,28 +143,25 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
         final String pwd;
 
         host = "localhost";
-        try
-        {
-          idIn = args[0];
-          pwdIn = args[1];
+        try {
+            idIn = args[0];
+            pwdIn = args[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Logging in with default id and password");//changed by Shouheng Wu
+            idIn = DEFAULT_ID;
+            pwdIn = DEFAULT_PASSWORD;
         }
-        catch(ArrayIndexOutOfBoundsException e)
-        {
-          System.out.println("Logging in with default id and password");//changed by Shouheng Wu
-          idIn = DEFAULT_ID;
-          pwdIn = DEFAULT_PASSWORD;
-        }
-        
+
         id = idIn;
         pwd = pwdIn;
-        
-    	//Schedule a job for the event dispatch thread:
+
+        //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI(host, DEFAULT_PORT, id, pwd);
             }
-       });
+        });
     }
 }
 

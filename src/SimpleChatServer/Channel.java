@@ -42,10 +42,9 @@ public class Channel {
 
     public Channel(String stringFromUser, AbstractServer thisServer) {
         channelName = setupChannelName(stringFromUser);
-        ArrayList users = parseChannelUsers(stringFromUser);
-        Thread[] allClients = thisServer.getClientConnections();
-        clients = new ArrayList<ConnectionToClient>(users.size());
-        setupChannelUsers(users, allClients);
+        usernames = parseChannelUsers(stringFromUser);
+        clients = new ArrayList<ConnectionToClient>(usernames.size());
+        setupChannelUsers(usernames, thisServer.getClientConnections());
     }
 
     /**
@@ -72,9 +71,7 @@ public class Channel {
                 }
             }
         }
-        for (ConnectionToClient client : clients) {
-            System.out.println(client);
-        }
+        clients.forEach(System.out::println);
     }
 
     /**
@@ -95,7 +92,7 @@ public class Channel {
      * @return array of strings with usernames
      */
     private ArrayList<String> parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
-        if (usernames.size() < 0 )
+        if (usernames.size() < 0)
             usernames = new ArrayList<>();
         String[] unames = stringFromUser.split(", ");
         for (String user : unames) {
@@ -105,7 +102,7 @@ public class Channel {
     }
 
     public Boolean removeClient(String user) {
-        if(!usernames.contains(user))
+        if (!usernames.contains(user))
             return false;
         return usernames.remove(user);
     }

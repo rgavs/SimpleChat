@@ -7,7 +7,7 @@ public class removeChannelUser extends ServerCommand {
 	}
 	
 	@Override
-	public void doCommand() { //#removeUser <channel> <username>	
+	public void doCommand() { //#removeUser <channel> <username>
 		int indexBlank = getStr().indexOf(' ');
 		String channelName = getStr().substring(0,indexBlank);
 		String user = getStr().substring(indexBlank +1);
