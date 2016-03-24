@@ -36,21 +36,21 @@ public class ChatClient1 extends AbstractClient {
      */
     private ChatIF myClientUI;
 
-    String myId;
-    String myPassword;
-    String monitor;
+    private String myId;
+    private String myPassword;
+    private String monitor;
 
     //Constructors ****************************************************
 
     /**
      * Constructs an instance of the chat client.
      *
-     * @param host The server to connect to.
-     * @param port The port number to connect on.
+     * @param host     The server to connect to.
+     * @param port     The port number to connect on.
      * @param clientUI The interface type variable.
      */
 
-    public ChatClient1(String host, int port, ChatIF clientUI, String id, String password) throws IOException {
+    public ChatClient1(String host, int port, ChatIF clientUI, String id, String password) {
         super(host, port); //Call the superclass constructor
         myClientUI = clientUI;
         myId = id;
@@ -58,7 +58,7 @@ public class ChatClient1 extends AbstractClient {
         try {
             openConnection();
             sendToServer(new ServerLoginHandler(id, password));
-        } catch (IOException e) {
+        } catch (Exception e) {
             clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
             quit();
         }
@@ -172,5 +172,4 @@ public class ChatClient1 extends AbstractClient {
         }
         System.exit(0);
     }
-}
-// End of ChatClient class
+}// End of ChatClient class

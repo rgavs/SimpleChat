@@ -63,7 +63,7 @@ public class ConnectionToClient extends Thread {
      * information about each client. Used by the setInfo and getInfo
      * methods.
      */
-    private HashMap<String, Object> savedInfo = new HashMap<String, Object>(10);
+    private HashMap<String, Object> savedInfo = new HashMap<>(10);
 
 
 // CONSTRUCTORS *****************************************************
@@ -243,12 +243,11 @@ public class ConnectionToClient extends Thread {
     /**
      * This method is called by garbage collection.
      */
-    @Override
+    @Override @SuppressWarnings("FinalizeDoesntCallSuperFinalize")
     protected void finalize() {
         try {
             closeAll();
         } catch (IOException e) {
         }
     }
-}
-// End of ConnectionToClient class
+}// End of ConnectionToClient class

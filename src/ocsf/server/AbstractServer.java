@@ -17,16 +17,16 @@ import java.io.*;
  * <p>
  * Method <code> handleMessageFromClient </code> must be defined by
  * a concrete subclass. Several other hook methods may also be
- * overriden.<p>
+ * overridden.<p>
  * <p>
  * Several public service methods are provided to applications that use
  * this framework, and several hook methods are also available<p>
  * <p>
  * Project Name: OCSF (Object Client-Server Framework)<p>
  *
- * @author Dr Robert Lagani&egrave;re
+ * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @version February 2001 (2.12)
  * @see ocsf.server.ConnectionToClient
@@ -359,7 +359,7 @@ public abstract class AbstractServer implements Runnable {
      * Hook method called when the server stops accepting
      * connections because an exception has been raised.
      * The default implementation does nothing.
-     * This method may be overriden by subclasses.
+     * This method may be overridden by subclasses.
      *
      * @param exception the exception raised.
      */
@@ -377,7 +377,7 @@ public abstract class AbstractServer implements Runnable {
     /**
      * Hook method called when the server stops accepting
      * connections.  The default implementation
-     * does nothing. This method may be overriden by subclasses.
+     * does nothing. This method may be overridden by subclasses.
      */
     protected void serverStopped() {
     }
@@ -385,7 +385,7 @@ public abstract class AbstractServer implements Runnable {
     /**
      * Hook method called when the server is clased.
      * The default implementation does nothing. This method may be
-     * overriden by subclasses. When the server is closed while still
+     * overridden by subclasses. When the server is closed while still
      * listening, serverStopped() will also be called.
      */
     protected void serverClosed() {
@@ -396,7 +396,7 @@ public abstract class AbstractServer implements Runnable {
      * This MUST be implemented by subclasses, who should respond to
      * messages.
      * This method is called by a synchronized method so it is also
-     * implcitly synchronized.
+     * implicitly synchronized.
      *
      * @param msg    the message sent.
      * @param client the connection connected to the client that

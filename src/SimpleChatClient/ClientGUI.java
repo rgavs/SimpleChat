@@ -42,37 +42,38 @@ package SimpleChatClient;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 import javax.swing.*;
 
 import common.ChatIF;
 import client.ChatClient1;
 
+import static javax.swing.JFrame.*;
+
 public class ClientGUI extends JPanel implements ActionListener, ChatIF {
-    protected JTextField textField;
-    protected JTextArea textArea;
+    private JTextField textField;
+    private JTextArea textArea;
     private final static String newline = "\n";
 
     /**
      * The default port to connect on.
      */
-    final public static int DEFAULT_PORT = 5555;
+    private final static int DEFAULT_PORT = 5555;
 
     /**
      * The instance of the client created by this ClientGUI.
      */
 
-    ChatClient1 client;
+    private ChatClient1 client;
 
     /**
      * The default(guest) user account and password.
      */
 
-    final public static String DEFAULT_ID = "guest";
-    final public static String DEFAULT_PASSWORD = "123";
+    private final static String DEFAULT_ID = "guest";
+    private final static String DEFAULT_PASSWORD = "123";
 
-    public ClientGUI(String host, int port, String id, String pwd) {
+    private ClientGUI(String host, int port, String id, String pwd) {
         super(new GridBagLayout());
 
         textField = new JTextField(20);
@@ -96,7 +97,7 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
 
         try {
             client = new ChatClient1(host, port, this, id, pwd);
-        } catch (IOException exception) {
+        } catch (Exception e) {
             display("Error: Can't setup connection!\n Terminating client.");
             System.exit(1);
         }
@@ -124,7 +125,7 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
     private static void createAndShowGUI(String host, int port, String id, String pwd) {
         //Create and set up the window.
         JFrame frame = new JFrame("Chat");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //Add contents to the window.
         frame.add(new ClientGUI(host, port, id, pwd));
@@ -135,14 +136,10 @@ public class ClientGUI extends JPanel implements ActionListener, ChatIF {
     }
 
     public static void main(String[] args) {
-        final String host;
-        int port = 0;  //The port number
-        String idIn = "";
-        String pwdIn = "";
-        final String id;
-        final String pwd;
-
-        host = "localhost";
+        final String host = "localhost";
+        int port;  //The port number
+        String idIn, pwdIn;
+        final String id, pwd;
         try {
             idIn = args[0];
             pwdIn = args[1];

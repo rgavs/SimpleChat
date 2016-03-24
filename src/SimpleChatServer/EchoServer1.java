@@ -1,9 +1,9 @@
 package SimpleChatServer;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import ocsf.server.*;
 import common.*;
@@ -40,7 +40,7 @@ public class EchoServer1 extends AbstractServer {
      *
      * @param port The port number to connect on.
      */
-    public EchoServer1(int port, ChatIF serverUI) throws IOException {
+    public EchoServer1(int port, ChatIF serverUI) {
         super(port);
         myServerUI = serverUI;
         closed = false;
@@ -61,7 +61,7 @@ public class EchoServer1 extends AbstractServer {
     }
 
     private void initializeChannels() {
-        channels = new ArrayList<Channel>();
+        channels = new ArrayList<>();
     }
 
     //Instance methods ************************************************
@@ -90,7 +90,7 @@ public class EchoServer1 extends AbstractServer {
 
     public Channel getChannel(String chan) {
         for (Channel chl : channels) {
-            if (chl.getChannelName() == chan)
+            if (Objects.equals(chl.getChannelName(), chan))
                 return chl;
         }
         serverUI().display("Requested channel " + chan + " does not exist!");
@@ -108,7 +108,6 @@ public class EchoServer1 extends AbstractServer {
                         serverUI().display("Error in sending message");
                     }
                 }
-                return;
             } else {
                 serverUI().display("Channel with the name " + channel + " does not exist.");
                 return;
@@ -116,20 +115,29 @@ public class EchoServer1 extends AbstractServer {
         }
     }
 
-    //Written by Shouheng Wu
-    //This method checks whether the given ID is already an existing user
+    /**
+     * @author Shouheng Wu
+     * <p>
+     * This method checks whether the given ID is already an existing user
+     */
     public boolean checkExistingAccount(String id) {
         return accounts.containsKey(id);
     }//end checkExistingAccount
 
-    //Written by Shouheng Wu
-    //This method creates a user account by adding a id/password combination to the HashMap accounts
+    /**
+     * @author Shouheng Wu
+     * <p>
+     * This method creates a user account by adding a id/password combination to the HashMap accounts
+     */
     public void setNewAccount(String id, String password) {
         accounts.put(id, password);
     }//end class
 
-    //Written by Shouheng Wu
-    //This method returns true if the provided password is correct
+    /**
+     * @author Shouheng Wu
+     * <p>
+     * This method returns true if the provided password is correct
+     */
     public boolean checkPassword(String id, String password) {
         return accounts.get(id).equals(password);
     }//end checkPassword
@@ -199,11 +207,11 @@ public class EchoServer1 extends AbstractServer {
         sendToAllClients("SERVER MSG> Server has stopped listening.");
     }
 
-    protected Boolean isClosed() {
+    boolean isClosed() {
         return closed;
     }
 
-    protected void setClosed(Boolean status) {
+    void setClosed(boolean status) {
         closed = status;
     }//end setStatus
 

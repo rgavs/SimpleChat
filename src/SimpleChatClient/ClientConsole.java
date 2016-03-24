@@ -33,7 +33,7 @@ public class ClientConsole implements ChatIF {
     /**
      * The instance of the client that created this ConsoleChat.
      */
-    ChatClient1 client;
+    private ChatClient1 client;
 
     //Constructors ****************************************************
 
@@ -43,12 +43,11 @@ public class ClientConsole implements ChatIF {
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
-    public ClientConsole(String host, int port, String id, String password) {
+    private ClientConsole(String host, int port, String id, String password) {
         try {
             client = new ChatClient1(host, port, this, id, password);
-        } catch (IOException exception) {
-            System.out.println("Error: Can't setup connection!"
-                    + " Terminating client.");
+        } catch (Exception e) {
+            System.out.println("Error: Can't setup connection! Terminating client.");
             System.exit(1);
         }
     }
@@ -60,10 +59,9 @@ public class ClientConsole implements ChatIF {
      * This method waits for input from the console.  Once it is
      * received, it sends it to the client's message handler.
      */
-    public void accept() {
+    private void accept() {
         try {
-            BufferedReader fromConsole =
-                    new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
             String message;
 
             while (true) {
@@ -95,10 +93,8 @@ public class ClientConsole implements ChatIF {
      * @param args The host to connect to.
      */
     public static void main(String[] args) {
-        String host = "";
-        String id = "";
-        String password = "";
-        int port = 0;  //The port number
+        String host, id = "", password = "";
+        int port;  //The port number
 
         try {
             id = args[0];
