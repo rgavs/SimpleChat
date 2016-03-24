@@ -16,4 +16,3 @@ public class switchChannels extends ServerCommand {
         getServer().serverUI().display(" and joined " + args[3]);
     }
 }
-q
