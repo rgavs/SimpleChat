@@ -8,7 +8,7 @@ package common;
  * This interface implements the abstract method used to display
  * objects onto the client or server UIs.
  *
- * @author Dr Robert Lagani&egrave;re
+ * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
  * @version July 2000
  */

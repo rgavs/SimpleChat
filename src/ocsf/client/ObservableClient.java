@@ -13,169 +13,154 @@ import java.net.*;
  * and is also an <code>Observable</code> class.
  * Each time a new message is received, observers are notified.
  *
- * @author Dr Robert Lagani&egrave;re
+ * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
- * @author Fran&ccedil;ois B&eacute;lange
+ * @author Franccedilois Beacutelange
  * @version Febuary 2001
  */
-public class ObservableClient extends Observable
-{
-  // Class variables ***************************************************
-  
-  /**
-   * Indicates occurence of a connection exception.
-   */
-  public static final String CONNECTION_EXCEPTION = "#OC:Connection error.";
-  
-  /**
-   * Indicates a close of the connection to server.
-   */
-  public static final String CONNECTION_CLOSED = "#OC:Connection closed.";
-  
-  /**
-   * Indicates establishment of a connection to server.
-   */
-  public static final String CONNECTION_ESTABLISHED = "#OC:Connection established.";
+public class ObservableClient extends Observable {
+    // Class variables ***************************************************
 
-  //Instance variables **********************************************
+    /**
+     * Indicates occurence of a connection exception.
+     */
+    public static final String CONNECTION_EXCEPTION = "#OC:Connection error.";
 
-  /**
-   * The service instance used to simulate multiple class inheritance.
-   */
-  private AdaptableClient service;
+    /**
+     * Indicates a close of the connection to server.
+     */
+    public static final String CONNECTION_CLOSED = "#OC:Connection closed.";
 
-  //Constructor *****************************************************
+    /**
+     * Indicates establishment of a connection to server.
+     */
+    public static final String CONNECTION_ESTABLISHED = "#OC:Connection established.";
 
-  public ObservableClient(String host, int port)
-  {
-    service = new AdaptableClient(host, port, this);
-  }
+    //Instance variables **********************************************
 
-  //Instance methods ************************************************
+    /**
+     * The service instance used to simulate multiple class inheritance.
+     */
+    private AdaptableClient service;
 
-  /**
-   * Opens the connections with the server.
-   */
-  final public void openConnection() throws IOException
-  {
-    service.openConnection();
-  }
+    //Constructor *****************************************************
 
-  /**
-   * Closes the connection to the server.
-   */
-  final public void closeConnection() throws IOException
-  {
-    service.closeConnection();
-  }
+    public ObservableClient(String host, int port) {
+        service = new AdaptableClient(host, port, this);
+    }
 
-  /**
-   * Sends an object to the server. This is the only way that
-   * methods should communicate with the server.
-   *
-   *  @param msg   The message to be sent.
-   */
-  final public void sendToServer(Object msg) throws IOException
-  {
-    service.sendToServer(msg);
-  }
+    //Instance methods ************************************************
+
+    /**
+     * Opens the connections with the server.
+     */
+    final public void openConnection() throws IOException {
+        service.openConnection();
+    }
+
+    /**
+     * Closes the connection to the server.
+     */
+    final public void closeConnection() throws IOException {
+        service.closeConnection();
+    }
+
+    /**
+     * Sends an object to the server. This is the only way that
+     * methods should communicate with the server.
+     *
+     * @param msg The message to be sent.
+     */
+    final public void sendToServer(Object msg) throws IOException {
+        service.sendToServer(msg);
+    }
 
 // ACCESSING METHODS ------------------------------------------------
 
-  /**
-   * @used to find out if the client is connnected.
-   */
-  final public boolean isConnected()
-  {
-    return service.isConnected();
-  }
+    /**
+     * @used to find out if the client is connnected.
+     */
+    final public boolean isConnected() {
+        return service.isConnected();
+    }
 
-  /**
-   * @return the port number.
-   */
-  final public int getPort()
-  {
-    return service.getPort();
-  }
+    /**
+     * @return the port number.
+     */
+    final public int getPort() {
+        return service.getPort();
+    }
 
-  /**
-   * Sets the server port number for the next connection.
-   * Only has effect if the client is not currently connected.
-   *
-   * @param port the port number.
-   */
-  final public void setPort(int port)
-  {
-    service.setPort(port);
-  }
+    /**
+     * Sets the server port number for the next connection.
+     * Only has effect if the client is not currently connected.
+     *
+     * @param port the port number.
+     */
+    final public void setPort(int port) {
+        service.setPort(port);
+    }
 
-  /**
-   * @return the host name.
-   */
-  final public String getHost()
-  {
-    return service.getHost();
-  }
+    /**
+     * @return the host name.
+     */
+    final public String getHost() {
+        return service.getHost();
+    }
 
-  /**
-   * Sets the server host for the next connection.
-   * Only has effect if the client is not currently connected.
-   *
-   * @param host the host name.
-   */
-  final public void setHost(String host)
-  {
-    service.setHost(host);
-  }
+    /**
+     * Sets the server host for the next connection.
+     * Only has effect if the client is not currently connected.
+     *
+     * @param host the host name.
+     */
+    final public void setHost(String host) {
+        service.setHost(host);
+    }
 
-  /**
-   * @return the client's Inet address.
-   */
-  final public InetAddress getInetAddress()
-  {
-    return service.getInetAddress();
-  }
+    /**
+     * @return the client's Inet address.
+     */
+    final public InetAddress getInetAddress() {
+        return service.getInetAddress();
+    }
 
 
-  /**
-   * This method is used to handle messages from the server.  This method
-   * can be overriden but should always call notifyObservers().
-   *
-   * @param message The message received from the client.
-   */
-  protected void handleMessageFromServer(Object message)
-  {
-    setChanged();
-    notifyObservers(message);
-  }
+    /**
+     * This method is used to handle messages from the server.  This method
+     * can be overriden but should always call notifyObservers().
+     *
+     * @param message The message received from the client.
+     */
+    protected void handleMessageFromServer(Object message) {
+        setChanged();
+        notifyObservers(message);
+    }
 
-  /**
-   * Hook method called after the connection has been closed.
-   */
-  protected void connectionClosed() 
-  {
-    setChanged();
-    notifyObservers(CONNECTION_CLOSED);
-  }
+    /**
+     * Hook method called after the connection has been closed.
+     */
+    protected void connectionClosed() {
+        setChanged();
+        notifyObservers(CONNECTION_CLOSED);
+    }
 
-  /**
-   * Hook method called each time an exception
-   * is raised by the client listening thread.
-   *
-   * @param exception the exception raised.
-   */
-  protected void connectionException(Exception exception) 
-  {
-    setChanged();
-    notifyObservers(CONNECTION_EXCEPTION);
-  }
+    /**
+     * Hook method called each time an exception
+     * is raised by the client listening thread.
+     *
+     * @param exception the exception raised.
+     */
+    protected void connectionException(Exception exception) {
+        setChanged();
+        notifyObservers(CONNECTION_EXCEPTION);
+    }
 
-  /**
-   * Hook method called after a connection has been established.
-   */
-  protected void connectionEstablished() 
-  {
-    setChanged();
-    notifyObservers(CONNECTION_ESTABLISHED);
-  }
+    /**
+     * Hook method called after a connection has been established.
+     */
+    protected void connectionEstablished() {
+        setChanged();
+        notifyObservers(CONNECTION_ESTABLISHED);
+    }
 }
