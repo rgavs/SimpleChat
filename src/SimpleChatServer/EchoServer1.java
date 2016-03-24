@@ -73,12 +73,59 @@ public class EchoServer1 extends AbstractServer {
      * @param client The connection from which the message originated.
      */
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-        handler.setMessage(msg.toString());
-        handler.setServer(this);
-        handler.setConnectionToClient(client);
-        handler.handleMessage();
+        if (msg.toString().contains("##")){
+		    String[] list = msg.toString().split("##");
+		    String name = list[1];
+		    ConnectionToClient monitor = getConnection(name, getClientConnections());
+		    if (monitor != null){
+			    sendToMonitor(list[0],monitor);
+		     }
+	    }
+  	    else if (msg.toString().startsWith("#checkmonitor")){
+  		    String[] list = msg.toString().split(" ");
+  		    ConnectionToClient monitor = getConnection(list[1], getClientConnections());
+  		    if (monitor == null){
+  			    try {
+  				    client.sendToClient("$$"+list[1]+" is not connected. Try another one.");
+  			    }catch (Exception ex){}
+  		    }
+  		    else{
+  			    try {
+				    client.sendToClient("$$$"+list[1]+" will monitor for you.");
+			    }catch (Exception ex){}
+  		    }
+  	    }
+	    else{
+	        ServerMessageHandler handler = (ServerMessageHandler) msg;
+	        handler.setServer(this);
+	        handler.setConnectionToClient(client);
+	        handler.handleMessage();
+	    }
     }
+    
+    public void sendToMonitor(String mess, ConnectionToClient monitor){
+	    try{
+		    monitor.sendToClient(mess);
+		}catch (Exception ex){}
+    }
+  
+  /**
+   * Returns the connection to the person who will monitor the message
+   * 
+   * @param id
+   * @param allClients
+   * @return Connection to the monitor
+   */
+  public ConnectionToClient getConnection(String id, Thread[] allClients){
+	  for (int i = 0; i < allClients.length; i++) {
+			ConnectionToClient client = (ConnectionToClient) allClients[i];
+			String username = (String) client.getInfo("id");
+			if (username.equals(id)) 
+				return client; 
+	  }
+	  return null;
+  }
+  
 
     public void addChannel(Channel chl) {
         channels.add(chl);
