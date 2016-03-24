@@ -130,37 +130,45 @@ public class EchoServer1 extends AbstractServer {
     public void addChannel(Channel chl) {
         channels.add(chl);
     }
+    
+      public void removeChannel(String channelName) {
+	  Channel chl = getChannel(channelName);
+	  if (chl == null) 
+		  return; 
+	  else 
+		  channels.remove(chl);
+	  
+  }
 
     public ArrayList<Channel> enumerateChannels() {
-        return channels;
+       Channel[] copy = new Channel[channels.size()];
+	  for (int i = 0; i<channels.size(); i++) {
+		  copy[i] = channels.get(i);
+	  }
+	  return copy;
     }
 
     public Channel getChannel(String chan) {
-        for (Channel chl : channels) {
-            if (Objects.equals(chl.getChannelName(), chan))
-                return chl;
+        for (int i = 0; i<channels.size(); i++){
+		 Channel chl = channels.get(i);
+		 if (chl.getChannelName().equals(channelName))
+			 return chl;
         }
         serverUI().display("Requested channel " + chan + " does not exist!");
         return null;
     }
 
-    private void sendToChannelClients(Object msg, String channel) {
-        for (Channel chan : channels) {
-            if (chan.getChannelName().equals(channel)) {
-                ArrayList<ConnectionToClient> channelClients = chan.enumerateClients();
-                for (ConnectionToClient channelClient : channelClients) {
-                    try {
-                        channelClient.sendToClient("Server MSG " + chan.getChannelName() + "> " + msg);
-                    } catch (Exception ex) {
-                        serverUI().display("Error in sending message");
-                    }
-                }
-            } else {
-                serverUI().display("Channel with the name " + channel + " does not exist.");
-                return;
-            }
-        }
-    }
+    private void sendToChannelClients(Object msg, String channel,String senderID) {
+    	Channel chl = getChannel(channel);
+	  	if (chl == null) {
+	  		serverUI().display("Channel with the name " + channel + " does not exist.");
+	  		}
+	  	else {
+	  		 chl.sendToClients(msg, senderID);
+		  }
+			  
+  		} 
+    	
 
     /**
      * @author Shouheng Wu
@@ -200,20 +208,55 @@ public class EchoServer1 extends AbstractServer {
         }
     }//end handleMessageFromUser
 
-    public void sendToChannel(String message) {
-        String channelName;
-        int indexBlank = message.indexOf(' ');
-        if (indexBlank == -1) {
-            channelName = message;
-            String msg = "";
-            sendToChannelClients(channelName, msg);
-        } else {
-            channelName = message.substring(0, indexBlank);
-            String msg = message.substring(indexBlank + 1);
-            sendToChannelClients(msg, channelName);
-        }
+    public void sendToChannel(String message) { //send messages to channel from server user
+       String channelName;
+	  int indexBlank = message.indexOf(' ');
+	  if(indexBlank == -1) {
+			serverUI().display("Invalid input");
+	  }
+	  else {
+		  channelName = message.substring(0, indexBlank);
+		  String msg = message.substring(indexBlank + 1);
+		  Channel chl = getChannel(channelName);
+		  if (chl == null) 
+		  		serverUI().display("Channel with the name " + channelName + " does not exist.");
+		  	else {
+		  		chl.sendServerMsg(msg);
+		  	}
+	  }
     }
 
+	public void sendToChannel(String message, ConnectionToClient sender) { //send messages to channel from clients of channel
+	  String channelName;
+	  int indexBlank = message.indexOf(' ');
+	  if(indexBlank == -1) {
+		  try {
+			sender.sendToClient("Invalid input");
+		} catch (IOException e) {
+
+		}
+//		  channelName = message;
+//		  String msg = "";
+//		  sendToChannelClients(channelName, msg,senderID);
+	  }
+	  else {
+		  channelName = message.substring(0, indexBlank);
+		  String msg = message.substring(indexBlank + 1);
+		  if (getChannel(channelName).isInChannel((String)sender.getInfo("id")))
+			  sendToChannelClients(msg, channelName,(String)sender.getInfo("id"));
+		else
+			try {
+				sender.sendToClient("SERVER MSG> You are not in that channel");
+			} catch (IOException e) {
+
+			}
+	  }
+  }
+  
+   public int numOfChannels() {
+	  return channels.size();
+  }
+	
     public void createAndDoCommand(String message) {
         String commandStr;
         int indexBlank = message.indexOf(' ');
