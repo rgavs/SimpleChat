@@ -78,7 +78,7 @@ public class ObservableClient extends Observable {
 // ACCESSING METHODS ------------------------------------------------
 
     /**
-     * @used to find out if the client is connnected.
+     * used to find out if the client is connected.
      */
     final public boolean isConnected() {
         return service.isConnected();

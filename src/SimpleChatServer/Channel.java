@@ -15,12 +15,7 @@ public class Channel {
      */
     private ArrayList<ConnectionToClient> clients;
 
-    /**
-     * Plaintext user names, only created from parse usernames
-     */
-    private ArrayList<String> usernames;    // TODO decide if ArrayList<String> usernames is necessary
-
-    /**
+     /**
      * Name of the channel given by integer.
      */
     private String channelName;
@@ -33,7 +28,7 @@ public class Channel {
     /**
      * Blocks/exclusions in where to send messages
      */
-
+    
     public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
         server = thisServer;
         this.channelName = channelName;
@@ -42,9 +37,8 @@ public class Channel {
 
     public Channel(String stringFromUser, AbstractServer thisServer) {
         channelName = setupChannelName(stringFromUser);
-        usernames = parseChannelUsers(stringFromUser);
-        clients = new ArrayList<ConnectionToClient>(usernames.size());
-        setupChannelUsers(usernames, thisServer.getClientConnections());
+        clients = new ArrayList<>(parseChannelUsers(stringFromUser).size());
+        setupChannelUsers(parseChannelUsers(stringFromUser), thisServer.getClientConnections());
     }
 
     /**
@@ -52,9 +46,7 @@ public class Channel {
      * @param allClients Array of all ConnectionToClient clients
      */
     private void setupChannelUsers(ArrayList<String> users, Thread[] allClients) {
-        for (String user1 : users) {
-            System.out.println(user1);
-        }
+        users.forEach(System.out::println);
         here:
         for (int i = 0; i < users.size(); i++) {
             for (int k = 0; i < allClients.length; k++) {
@@ -77,15 +69,15 @@ public class Channel {
     /**
      * Finds ClientConnection, casts to ConnectionToClient, and adds to <code>users</code> and <code>clients</code>.
      */
-    public void addClient(String client){
-        for (Thread thr : getServer().getClientConnections()){
-            if (((ConnectionToClient) thr).getInfo("id").equals(client)){
+    public void addClient(String client) {
+        for (Thread thr : getServer().getClientConnections()) {
+            if (((ConnectionToClient) thr).getInfo("id").equals(client)) {
                 clients.add((ConnectionToClient) thr);
-                System.out.println(client+" successfully added to Channel!");
+                System.out.println(client + " successfully added to Channel!");
                 return;
             }
         }
-        System.out.println(client+" was unable to be found. Channel clients remain unchanged");
+        System.out.println(client + " was unable to be found. Channel clients remain unchanged");
     }
 
     /**
@@ -105,20 +97,17 @@ public class Channel {
      * @param stringFromUser comma-separated list of usernames
      * @return array of strings with usernames
      */
-    private ArrayList<String> parseChannelUsers(String stringFromUser) { //(stringFromUser: channelName, user1, user2...
-        if (usernames.size() < 0)
-            usernames = new ArrayList<>();
-        String[] unames = stringFromUser.split(", ");
-        for (String user : unames) {
-            usernames.add(user);
-        }
-        return usernames;
+    private ArrayList<String> parseChannelUsers(String stringFromUser) { // channelName, user1, user2...
+        ArrayList<String> ret = new ArrayList<>(stringFromUser.split(",").length - 1);
+        for (int i = 1; i < ret.size(); i++)
+            ret.add(stringFromUser.split(",")[i].trim());
+        return ret;
     }
 
-    public Boolean removeClient(String user) {
-        if (!usernames.contains(user))
-            return false;
-        return usernames.remove(user);
+    public void removeClient(String user) {
+        for (ConnectionToClient cli : clients)
+            if (cli.getInfo("id").equals(user))
+                clients.remove(cli);
     }
 
     public String getChannelName() {
@@ -129,7 +118,7 @@ public class Channel {
         return clients.size();
     }
 
-    public AbstractServer getServer() {
+    private AbstractServer getServer() {
         return server;
     }
 

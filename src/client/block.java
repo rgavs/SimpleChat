@@ -1,14 +1,13 @@
 package client;
 
-import java.util.*;
-
 /**
  * Created  3/4/16.
  *
  * @author rgavs
  *         <p>
- *         This class takes commands from client in the form: "#block user user1 user2 ..."
- *         to handle sloppy syntax, this will accept the following field separator values: "," ";" " "
+ *         This class takes commands from client in the form: "#block channel user user1 user2 ..."
+ *              and forwards them to the server, which handles execution
+ *         accepts FieldSeparators: "," ";" " "
  *         <p>
  */
 
@@ -19,8 +18,11 @@ public class block extends ClientCommand {
     }
 
     @Override
-    public void doCommand() { // TODO: check @tmoopenn pull request #26 regarding Client-Server interaction only using Strings
-        
-        String[] users = Arrays.copyOfRange(getStr().split("^[a-zA-Z]"), 1, getStr().split("^[a-zA-Z]").length - 1);
+    public void doCommand() {
+        try {
+            getClient().sendToServer("# "  + getClient().getId() + " " + getStr());
+        } catch (Exception e) {
+            getClient().clientUI().display("Error attempting to reach server");
+        }
     }
 }

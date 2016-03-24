@@ -12,7 +12,7 @@ package ocsf.client;
  * Project Name: OCSF (Object Client-Server Framework)<p>
  *
  * @author Dr. Robert Laganiegravere
- * @version Febuary 2001
+ * @version February 2001
  */
 class AdaptableClient extends AbstractClient {
     //Instance variables **********************************************
