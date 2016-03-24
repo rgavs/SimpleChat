@@ -55,6 +55,7 @@ public class ChatClient1 extends AbstractClient {
         myClientUI = clientUI;
         myId = id;
         myPassword = password;
+        monitor = null;
         try {
             openConnection();
             sendToServer(new ServerLoginHandler(id, password));
@@ -92,7 +93,17 @@ public class ChatClient1 extends AbstractClient {
      * @param msg The message from the server.
      */
     public void handleMessageFromServer(Object msg) {
-        clientUI().display(msg.toString());
+        if(msg.toString().startsWith("$$$")){
+    	    clientUI().display(msg.toString().substring(3));
+        }
+        else if(msg.toString().startsWith("$$")){
+        	setMonitor(null);
+        	clientUI().display(msg.toString().substring(2));
+        }
+        else if (!msg.toString().startsWith("$$") && getMonitor() != null){
+    	    clientUI().display(msg.toString());
+    	    sendMessageToServer(msg.toString()+"##"+getMonitor());
+        }
     }
 
     /**
