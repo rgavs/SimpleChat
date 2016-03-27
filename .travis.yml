@@ -1,7 +1,9 @@
 language: java
-jvm: 1.8
+jdk:
+  - oraclejdk8
 
 # whitelist
 branches:
-    only: rgavs-local
+    only:
+        rgavs-local
         # - master
