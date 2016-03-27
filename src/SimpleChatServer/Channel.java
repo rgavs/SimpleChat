@@ -1,6 +1,8 @@
 package SimpleChatServer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -23,43 +25,35 @@ public class Channel {
     /**
      * Server to which the channel belongs
      */
-    private AbstractServer server;
+	private EchoServer1 server;
 
     /**
      * Blocks/exclusions in where to send messages
      */
     
     public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
-        server = thisServer;
+        server = (EchoServer1) thisServer;
         this.channelName = channelName;
         clients = myClients;
     }
 
-    public Channel(String stringFromUser, AbstractServer thisServer) {
+	public Channel(String stringFromUser, EchoServer1 thisServer) {
         channelName = setupChannelName(stringFromUser);
         clients = new ArrayList<>(parseChannelUsers(stringFromUser).size());
-        setupChannelUsers(parseChannelUsers(stringFromUser), thisServer.getClientConnections());
+        setupChannelUsers(parseChannelUsers(stringFromUser),  (ConnectionToClient[]) thisServer.getClientConnections());
     }
 
     /**
-     * @param users      Array of type String of usernames
-     * @param allClients Array of all ConnectionToClient clients
+     * @param users      ArrayList of type String of usernames
+     * @param allClients ArrayList of all ConnectionToClient clients
      */
-    private void setupChannelUsers(ArrayList<String> users, Thread[] allClients) {
+    private void setupChannelUsers(ArrayList<String> users, ConnectionToClient[] allClients) {
         users.forEach(System.out::println);
-        here:
-        for (int i = 0; i < users.size(); i++) {
-            for (int k = 0; i < allClients.length; k++) {
-                ConnectionToClient client = (ConnectionToClient) allClients[k];
-                String username = (String) client.getInfo("id");
-                String user = users.get(i);
-                if (user == null)
-                    break here;
-                else {
-                    if (user.equals(username)) {
-                        clients.add(client);
-                        break here;
-                    }
+        for (String usr : users) {
+            for (ConnectionToClient cli : allClients) {
+                if(usr.equals(cli.getId())){
+                    clients.add(cli);
+                    break;
                 }
             }
         }
@@ -72,9 +66,13 @@ public class Channel {
     public void addClient(String client) {
         for (Thread thr : getServer().getClientConnections()) {
             if (((ConnectionToClient) thr).getInfo("id").equals(client)) {
-                clients.add((ConnectionToClient) thr);
-                System.out.println(client + " successfully added to Channel!");
-                return;
+                try{
+                    clients.add((ConnectionToClient) thr);
+                    ((ConnectionToClient) thr).sendToClient("You have been added to the channel " + channelName);
+                    return;
+                } catch(IOException e) {
+                    server.serverUI().display("error in sending message");
+                }
             }
         }
         System.out.println(client + " was unable to be found. Channel clients remain unchanged");
@@ -82,8 +80,7 @@ public class Channel {
 
     /**
      * Parses the string from the user for the name of the channel and returns it.
-     *
-     * @param str from user
+     * @param str
      * @return names of the channel
      */
     private String setupChannelName(String str) {
@@ -106,8 +103,17 @@ public class Channel {
 
     public void removeClient(String user) {
         for (ConnectionToClient cli : clients)
-            if (cli.getInfo("id").equals(user))
+            if (cli.getInfo("id").equals(user)){
                 clients.remove(cli);
+            }
+    }
+    
+    public boolean isInChannel(String username){
+        for(ConnectionToClient user : clients){
+            if(user.getInfo("id").equals(username))
+                return true;
+        }
+        return false;
     }
 
     public String getChannelName() {
@@ -118,11 +124,23 @@ public class Channel {
         return clients.size();
     }
 
-    private AbstractServer getServer() {
+    private EchoServer1 getServer() {
         return server;
     }
 
     public ArrayList<ConnectionToClient> enumerateClients() {
         return clients;
+    }
+    
+    //Send messages to all channel clients from one channel client
+    public void sendToClients(Object msg, String senderID) {
+        //Object[] channelClients = chl.enumerateClients();
+        for (ConnectionToClient client : clients) {
+            try {
+                ((ConnectionToClient) client).sendToClient(senderID + " " + channelName + "> " + msg);
+            } catch (Exception ex) {
+                getServer().serverUI().display("Error in sending message");
+            }
+        }
     }
 }

@@ -1,9 +1,7 @@
 package SimpleChatServer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 import ocsf.server.*;
 import common.*;
@@ -80,8 +78,38 @@ public class EchoServer1 extends AbstractServer {
         handler.handleMessage();
     }
 
+    public void sendToMonitor(String mess, ConnectionToClient monitor) {
+        try {
+            monitor.sendToClient(mess);
+        } catch (Exception ex) {
+        }
+    }
+
+    /**
+     * Returns the connection to the person who will monitor the message
+     *
+     * @param id
+     * @param allClients
+     * @return Connection to the monitor
+     */
+    public ConnectionToClient getConnection(String id, Thread[] allClients) {
+        for (int i = 0; i < allClients.length; i++) {
+            ConnectionToClient client = (ConnectionToClient) allClients[i];
+            String username = (String) client.getInfo("id");
+            if (username.equals(id))
+                return client;
+        }
+        return null;
+    }
+
     public void addChannel(Channel chl) {
         channels.add(chl);
+    }
+
+    public void removeChannel(String channelName) {
+        if (getChannel(channelName) != null) {
+            channels.remove(getChannel(channelName));
+        }
     }
 
     public ArrayList<Channel> enumerateChannels() {
@@ -89,30 +117,13 @@ public class EchoServer1 extends AbstractServer {
     }
 
     public Channel getChannel(String chan) {
-        for (Channel chl : channels) {
-            if (Objects.equals(chl.getChannelName(), chan))
+        for (int i = 0; i < channels.size(); i++) {
+            Channel chl = channels.get(i);
+            if (chl.getChannelName().equals(chan))
                 return chl;
         }
         serverUI().display("Requested channel " + chan + " does not exist!");
         return null;
-    }
-
-    private void sendToChannelClients(Object msg, String channel) {
-        for (Channel chan : channels) {
-            if (chan.getChannelName().equals(channel)) {
-                ArrayList<ConnectionToClient> channelClients = chan.enumerateClients();
-                for (ConnectionToClient channelClient : channelClients) {
-                    try {
-                        channelClient.sendToClient("Server MSG " + chan.getChannelName() + "> " + msg);
-                    } catch (Exception ex) {
-                        serverUI().display("Error in sending message");
-                    }
-                }
-            } else {
-                serverUI().display("Channel with the name " + channel + " does not exist.");
-                return;
-            }
-        }
     }
 
     /**
@@ -154,18 +165,46 @@ public class EchoServer1 extends AbstractServer {
     }//end handleMessageFromUser
 
     public void sendToChannel(String message) {
-        String channelName;
-        int indexBlank = message.indexOf(' ');
-        if (indexBlank == -1) {
-            channelName = message;
-            String msg = "";
-            sendToChannelClients(channelName, msg);
-        } else {
-            channelName = message.substring(0, indexBlank);
-            String msg = message.substring(indexBlank + 1);
-            sendToChannelClients(msg, channelName);
+        String channelName = message.split(" ")[0];
+        if (message.indexOf(' ') < 0)
+            serverUI().display("Invalid input.");
+        else if (!channels.contains(channelName))
+            serverUI().display("No channel exists with the name: " + channelName);
+        else
+            channels.get(channels.indexOf(channelName)).sendToClients(message.substring(message.indexOf(' ')), "SERVER");
+    }
+
+    public void sendToChannel(String message, ConnectionToClient sender) { //send messages to channel from clients of channel
+        String channelName = message.split(" ")[0];
+        if (message.indexOf(' ') < 0) {
+            try {
+                sender.sendToClient("Invalid input. Please enter in the form: \'#<channelName> <message>\'");
+            } catch (IOException e) {
+                serverUI().display("IOException: " + e.getStackTrace());
+            }
+        } else if (getChannel(channelName) != null) {
+            String msg = message.substring(message.indexOf(' '));
+            Channel chan = getChannel(message.split(" ")[0]);
+            if (chan != null) {
+                if (!chan.isInChannel((String) sender.getInfo("id"))) {
+                    try {
+                        sender.sendToClient("SERVER MSG> You are not in that channel");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    chan.sendToClients(msg, (String) sender.getInfo("id"));
+                }
+            } else {
+                try {
+                    sender.sendToClient("SERVER MSG> No channel named \'"+chan.getChannelName()+"\' exists.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
 
     public void createAndDoCommand(String message) {
         String commandStr;

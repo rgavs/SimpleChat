@@ -16,8 +16,7 @@ public class block extends ServerCommand {
     @Override
     public void doCommand() {
         final String in = getStr();
-        String user = in.split(" ")[1];
-        String[] others = Arrays.copyOfRange(in.split(" ")[2].split("^[a-zA-Z]"), 1, getStr().split("^[a-zA-Z]").length - 1);
+        String[] others = Arrays.copyOfRange(in.split(" "), 1, in.split(" ").length - 1);
         for(String usr : others){
             getServer().getChannel("");
         }
