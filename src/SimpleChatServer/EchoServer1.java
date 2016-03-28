@@ -93,7 +93,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             }
         } else {
-            ServerMessageHandler handler = (ServerMessageHandler) msg;
+            ServerMessageHandler handler = ServerStringMessageHandler (msg);
             handler.setServer(this);
             handler.setConnectionToClient(client);
             handler.handleMessage();
