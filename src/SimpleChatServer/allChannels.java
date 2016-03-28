@@ -13,7 +13,7 @@ public class allChannels extends ServerCommand {
             if (list.length() < 1)
                 list = chan.getChannelName();
             else
-                list += ", " + chan.getChannelName();
+                list += "," + chan.getChannelName();
         }
         getServer().sendToAllClients("SERVER MSG> " + list);
         getServer().serverUI().display(list);

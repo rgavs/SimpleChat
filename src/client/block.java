@@ -20,7 +20,7 @@ public class block extends ClientCommand {
     @Override
     public void doCommand() {
         try {
-            getClient().sendToServer("# "  + getClient().getId() + " " + getStr());
+            getClient().sendToServer("#block "  + getClient().getId() + " " + getStr());
         } catch (Exception e) {
             getClient().clientUI().display("Error attempting to reach server");
         }

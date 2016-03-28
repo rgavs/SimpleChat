@@ -3,7 +3,7 @@ package client;
 import java.io.IOException;
 
 public class allChannels extends ClientCommand {
-    
+
     public allChannels(String str, ChatClient1 client) {
         super(str, client);
     }
