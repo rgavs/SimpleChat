@@ -2,7 +2,6 @@ package SimpleChatServer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.StringJoiner;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;

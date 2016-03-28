@@ -71,11 +71,33 @@ public class EchoServer1 extends AbstractServer {
      * @param client The connection from which the message originated.
      */
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        ServerMessageHandler1 handler = (ServerMessageHandler1) msg;
-        handler.setMessage(msg.toString());
-        handler.setServer(this);
-        handler.setConnectionToClient(client);
-        handler.handleMessage();
+        if (msg.toString().contains("##")) {
+            String[] list = msg.toString().split("##");
+            String name = list[1];
+            ConnectionToClient monitor = getConnection(name, getClientConnections());
+            if (monitor != null) {
+                sendToMonitor(list[0], monitor);
+            }
+        } else if (msg.toString().startsWith("#checkmonitor")) {
+            String[] list = msg.toString().split(" ");
+            ConnectionToClient monitor = getConnection(list[1], getClientConnections());
+            if (monitor == null) {
+                try {
+                    client.sendToClient("$$" + list[1] + " is not connected. Try another one.");
+                } catch (Exception ex) {
+                }
+            } else {
+                try {
+                    client.sendToClient("$$$" + list[1] + " will monitor for you.");
+                } catch (Exception ex) {
+                }
+            }
+        } else {
+            ServerMessageHandler handler = (ServerMessageHandler) msg;
+            handler.setServer(this);
+            handler.setConnectionToClient(client);
+            handler.handleMessage();
+        }
     }
 
     public void sendToMonitor(String mess, ConnectionToClient monitor) {
@@ -113,7 +135,11 @@ public class EchoServer1 extends AbstractServer {
     }
 
     public ArrayList<Channel> enumerateChannels() {
-        return channels;
+        ArrayList<Channel> copy = new ArrayList<>();
+        for (Channel chan : channels) {
+            copy.add(chan);
+        }
+        return copy;
     }
 
     public Channel getChannel(String chan) {
@@ -180,7 +206,7 @@ public class EchoServer1 extends AbstractServer {
             try {
                 sender.sendToClient("Invalid input. Please enter in the form: \'#<channelName> <message>\'");
             } catch (IOException e) {
-                serverUI().display("IOException: " + e.getStackTrace());
+                serverUI().display("IOException: " + e.getMessage());
             }
         } else if (getChannel(channelName) != null) {
             String msg = message.substring(message.indexOf(' '));
@@ -197,7 +223,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             } else {
                 try {
-                    sender.sendToClient("SERVER MSG> No channel named \'"+chan.getChannelName()+"\' exists.");
+                    sender.sendToClient("SERVER MSG> No channel named \'" + chan.getChannelName() + "\' exists.");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

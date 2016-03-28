@@ -1,9 +1,6 @@
 package client;
 
-import common.*;
-
 public class endmonitor extends ClientCommand {
-
     public endmonitor(String str, ChatClient1 myClient) {
         super(str, myClient);
     }
