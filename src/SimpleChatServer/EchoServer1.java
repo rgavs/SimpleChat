@@ -70,16 +70,22 @@ public class EchoServer1 extends AbstractServer {
      * @param msg    The message received, an instance of a subclass of ServerMessageHandler
      * @param client The connection from which the message originated.
      */
-    public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        if (msg.toString().contains("##")) {
-            String[] list = msg.toString().split("##");
+    
+    public void handleMessageFromClient(Object msg, ConnectionToClient client){
+    	//do nothing; implementing slot method
+    	
+    }//end handleMessageFromClient
+    
+    public void handleMessageFromClient(String msg, ConnectionToClient client) {
+        if (msg.contains("##")) {
+            String[] list = msg.split("##");
             String name = list[1];
             ConnectionToClient monitor = getConnection(name, getClientConnections());
             if (monitor != null) {
                 sendToMonitor(list[0], monitor);
             }
-        } else if (msg.toString().startsWith("#checkmonitor")) {
-            String[] list = msg.toString().split(" ");
+        } else if (msg.startsWith("#checkmonitor")) {
+            String[] list = msg.split(" ");
             ConnectionToClient monitor = getConnection(list[1], getClientConnections());
             if (monitor == null) {
                 try {
@@ -93,7 +99,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             }
         } else {
-            ServerMessageHandler handler = ServerStringMessageHandler (msg);
+            ServerMessageHandler handler = new ServerStringMessageHandler (msg);
             handler.setServer(this);
             handler.setConnectionToClient(client);
             handler.handleMessage();
