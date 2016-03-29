@@ -9,7 +9,7 @@ public class leaveChannel extends ServerCommand {
     public void doCommand() { //#leaveChannel user channel 
         try {
             String[] strs = getStr().split(" ");
-            getServer().getChannel(strs[2]).removeClient(strs[1]);
+            getServer().getChannel(strs[1]).removeClient(strs[0]);
         } catch (Exception e) {
             getServer().serverUI().display("Error leaving channel");
         }

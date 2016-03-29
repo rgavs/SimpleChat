@@ -32,6 +32,8 @@ public class login extends NotConnectedClientCommand {
             getClient().clientUI().display("Incorrect username or password.");
             return;
         }
+        
+        getClient().setId(username);
 
         //check if password consists of blanks only
         try {

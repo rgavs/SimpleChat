@@ -69,6 +69,10 @@ public class ChatClient1 extends AbstractClient {
         return myClientUI;
     }
 
+    public void setId(String newid) {
+    	myId = newid;
+    }
+    
     public String getId() {
         return myId;
     }
