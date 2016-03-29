@@ -35,7 +35,7 @@ public class setaccount extends ServerCommand {
 	        	getServer().setNewAccount(username, password);
 	        	try{
 	        		getServer().getConnection(origin, getServer().getClientConnections()).sendToClient("User " + username + " successfully created.");
-	        		System.out.println("User " + username + " successfully created.");
+	        		System.out.println("User \"" + username + "\" successfully created.");
 	        	}
 	        	catch(IOException e){
 	        		
