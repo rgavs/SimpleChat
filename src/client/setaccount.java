@@ -1,7 +1,5 @@
 package client;
 
-import common.ServerNewAccountHandler;
-
 //import ocsf.client.*;
 //import java.io.IOException;
 
@@ -38,7 +36,7 @@ public class setaccount extends ClientCommand {
 		
 		try{
 			if (getClient().isConnected()){
-				getClient().sendToServer(new ServerNewAccountHandler(username, password));
+				getClient().sendToServer("#setaccount " + username + " " + password + " " + getClient().getId());
 			}
 			else
 				getClient().clientUI().display("Must be disconnected from server to set account.");

@@ -18,7 +18,7 @@ public class quit extends ClientCommand {
     public void doCommand() {
         try {
             if (getClient().isConnected()) {
-                getClient().sendToServer(new ServerQuitHandler(getClient().getId()));
+                getClient().sendToServer("#clientquit " + getClient().getId());
                 getClient().clientUI().display("Connection closed, exiting.");
                 getClient().closeConnection();
             } else {

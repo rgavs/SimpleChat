@@ -2,14 +2,14 @@ package client;
 
 import java.io.IOException;
 
-public class privateMessage extends ClientCommand {
+public class privatechat extends ClientCommand {
 
-    public privateMessage(String str, ChatClient1 client) {
+    public privatechat(String str, ChatClient1 client) {
         super(str, client);
     }
 
     public void doCommand() {
-        Object msg = "#private " + getStr();
+        Object msg = "#privatechat " + getStr() + " " + getClient().getId();
         try {
             getClient().sendToServer(msg);
         } catch (IOException ex) {

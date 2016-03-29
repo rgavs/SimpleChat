@@ -72,7 +72,7 @@ public class EchoServer1 extends AbstractServer {
      */
     
     public void handleMessageFromClient(Object msg, ConnectionToClient client){
-    	//do nothing; implementing slot method
+    	handleMessageFromClient(msg.toString(), client);
     	
     }//end handleMessageFromClient
     
@@ -99,7 +99,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             }
         } else {
-            ServerMessageHandler handler = new ServerStringMessageHandler (msg);
+            ServerStringMessageHandler handler = new ServerStringMessageHandler (msg);
             handler.setServer(this);
             handler.setConnectionToClient(client);
             handler.handleMessage();
@@ -195,47 +195,105 @@ public class EchoServer1 extends AbstractServer {
             createAndDoCommand(message);
         }
     }//end handleMessageFromUser
-
-    public void sendToChannel(String message) {
-        String channelName = message.split(" ")[0];
-        if (message.indexOf(' ') < 0)
-            serverUI().display("Invalid input.");
-        else if (!channels.contains(channelName))
-            serverUI().display("No channel exists with the name: " + channelName);
-        else
-            channels.get(channels.indexOf(channelName)).sendToClients(message.substring(message.indexOf(' ')), "SERVER");
+    
+    private void sendToChannel(String message) { //for sending server msg
+  	  String channelName;
+  	  int indexBlank = message.indexOf(' ');
+  	  if(indexBlank == -1) {
+  			serverUI().display("Invalid input");
+  	  }
+  	  else {
+  		  channelName = message.substring(0, indexBlank);
+  		  String msg = message.substring(indexBlank + 1);
+  		  Channel chl = getChannel(channelName);
+  		  if (chl == null) 
+  		  		serverUI().display("Channel with the name " + channelName + " does not exist.");
+  		  	else {
+  		  		chl.sendServerMsg(msg);
+  		  		serverUI().display(message);
+  		  	}
+  	  }
     }
+    
+    public void sendToChannel(String message, ConnectionToClient sender) {
+  	  String channelName;
+  	  int indexBlank = message.indexOf(' ');
+  	  if(indexBlank == -1) {
+  		  try {
+  			sender.sendToClient("Invalid input");
+  		} catch (IOException e) {
 
-    public void sendToChannel(String message, ConnectionToClient sender) { //send messages to channel from clients of channel
-        String channelName = message.split(" ")[0];
-        if (message.indexOf(' ') < 0) {
-            try {
-                sender.sendToClient("Invalid input. Please enter in the form: \'#<channelName> <message>\'");
-            } catch (IOException e) {
-                serverUI().display("IOException: " + e.getMessage());
-            }
-        } else if (getChannel(channelName) != null) {
-            String msg = message.substring(message.indexOf(' '));
-            Channel chan = getChannel(message.split(" ")[0]);
-            if (chan != null) {
-                if (!chan.isInChannel((String) sender.getInfo("id"))) {
-                    try {
-                        sender.sendToClient("SERVER MSG> You are not in that channel");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    chan.sendToClients(msg, (String) sender.getInfo("id"));
-                }
-            } else {
-                try {
-                    sender.sendToClient("SERVER MSG> No channel named \'" + chan.getChannelName() + "\' exists.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+  		}
+//  		  channelName = message;
+//  		  String msg = "";
+//  		  sendToChannelClients(channelName, msg,senderID);
+  	  }
+  	  else {
+  		  channelName = message.substring(0, indexBlank);
+  		  String msg = message.substring(indexBlank + 1);
+  		  Channel chl = getChannel(channelName);
+  		  if (chl != null && chl.isInChannel((String)sender.getInfo("id")))//if (getChannel(channelName).isInChannel((String)sender.getInfo("id")))
+  			  sendToChannelClients(msg, channelName,(String)sender.getInfo("id"));
+  		else
+  			try {
+  				sender.sendToClient("SERVER MSG> You are not in that channel");
+  			} catch (IOException e) {
+
+  			}
+  	  }
     }
+    
+    private void sendToChannelClients(Object msg, String channel,String senderID) {
+	  	Channel chl = getChannel(channel);
+	  	if (chl == null) {
+	  		serverUI().display("Channel with the name " + channel + " does not exist.");
+	  		}
+	  	else {
+	  		 chl.sendToClients(msg, senderID);
+		  }
+			  
+  		} 
+
+//    public void sendToChannel(String message) {
+//        String channelName = message.split(" ")[0];
+//        if (message.indexOf(' ') < 0)
+//            serverUI().display("Invalid input.");
+//        else if (!channels.contains(channelName))
+//            serverUI().display("No channel exists with the name: " + channelName);
+//        else
+//            channels.get(channels.indexOf(channelName)).sendToClients(message.substring(message.indexOf(' ')), "SERVER");
+//    }
+
+//    public void sendToChannel(String message, ConnectionToClient sender) { //send messages to channel from clients of channel
+//        String channelName = message.split(" ")[0];
+//        if (message.indexOf(' ') < 0) {
+//            try {
+//                sender.sendToClient("Invalid input. Please enter in the form: \'#<channelName> <message>\'");
+//            } catch (IOException e) {
+//                serverUI().display("IOException: " + e.getMessage());
+//            }
+//        } else if (getChannel(channelName) != null) {
+//            String msg = message.substring(message.indexOf(' '));
+//            Channel chan = getChannel(message.split(" ")[0]);
+//            if (chan != null) {
+//                if (!chan.isInChannel((String) sender.getInfo("id"))) {
+//                    try {
+//                        sender.sendToClient("SERVER MSG> You are not in that channel");
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    chan.sendToClients(msg, (String) sender.getInfo("id"));
+//                }
+//            } else {
+//                try {
+//                    sender.sendToClient("SERVER MSG> No channel named \'" + chan.getChannelName() + "\' exists.");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
 
     public void createAndDoCommand(String message) {
@@ -291,7 +349,7 @@ public class EchoServer1 extends AbstractServer {
     }//end clientException
 
     protected synchronized void clientConnected(ConnectionToClient client) {
-        sendToAllClients("SERVER MSG> A client has connected.");
+        //sendToAllClients("SERVER MSG> A client has connected.");
     }//end clientConnected
 
     protected synchronized void clientDisconnected(ConnectionToClient client) {

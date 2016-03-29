@@ -58,7 +58,7 @@ public class ChatClient1 extends AbstractClient {
         monitor = null;
         try {
             openConnection();
-            //sendToServer("#login " + id + password);
+            sendToServer("#login " + id + " " + password);
         } catch (Exception e) {
             clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
             quit();
@@ -69,6 +69,10 @@ public class ChatClient1 extends AbstractClient {
         return myClientUI;
     }
 
+    public void setId(String newid) {
+    	myId = newid;
+    }
+    
     public String getId() {
         return myId;
     }
@@ -103,6 +107,9 @@ public class ChatClient1 extends AbstractClient {
         else if (!msg.toString().startsWith("$$") && getMonitor() != null){
     	    clientUI().display(msg.toString());
     	    sendMessageToServer(msg.toString()+"##"+getMonitor());
+        }
+        else{
+        	clientUI().display(msg.toString());
         }
     }
 
@@ -166,11 +173,11 @@ public class ChatClient1 extends AbstractClient {
     }
 
     public void connectionException(Exception ex) {
-        clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
+        //clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
     }
 
     public void connectionClosed() {
-        clientUI().display("Connection closed.");
+        //clientUI().display("Connection closed.");
     }
 
     /**
