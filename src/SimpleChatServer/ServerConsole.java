@@ -53,4 +53,5 @@ public class ServerConsole implements ChatIF {
         ServerConsole sconsole = new ServerConsole(port);
         sconsole.accept();  //Wait for console data
     }//end main()
-}
+
+ }

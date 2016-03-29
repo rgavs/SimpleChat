@@ -72,7 +72,7 @@ public class EchoServer1 extends AbstractServer {
      */
     
     public void handleMessageFromClient(Object msg, ConnectionToClient client){
-    	//do nothing; implementing slot method
+    	handleMessageFromClient(msg.toString(), client);
     	
     }//end handleMessageFromClient
     
@@ -99,7 +99,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             }
         } else {
-            ServerMessageHandler handler = new ServerStringMessageHandler (msg);
+            ServerStringMessageHandler handler = new ServerStringMessageHandler (msg);
             handler.setServer(this);
             handler.setConnectionToClient(client);
             handler.handleMessage();
@@ -291,7 +291,7 @@ public class EchoServer1 extends AbstractServer {
     }//end clientException
 
     protected synchronized void clientConnected(ConnectionToClient client) {
-        sendToAllClients("SERVER MSG> A client has connected.");
+        //sendToAllClients("SERVER MSG> A client has connected.");
     }//end clientConnected
 
     protected synchronized void clientDisconnected(ConnectionToClient client) {
