@@ -5,9 +5,8 @@ package client;
  *
  * @author rgavs
  *         <p>
- *         This class takes commands from client in the form: "#block channel user user1 user2 ..."
+ *         This class takes commands from client in the form: "#block channel user1 user2 ..." ; prepends client id
  *              and forwards them to the server, which handles execution
- *         accepts FieldSeparators: "," ";" " "
  *         <p>
  */
 
@@ -20,7 +19,7 @@ public class block extends ClientCommand {
     @Override
     public void doCommand() {
         try {
-            getClient().sendToServer("#block "  + getClient().getId() + " " + getStr());
+            getClient().sendToServer("# "  + getClient().getId() + " " + getStr());
         } catch (Exception e) {
             getClient().clientUI().display("Error attempting to reach server");
         }

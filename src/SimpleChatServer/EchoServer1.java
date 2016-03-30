@@ -249,7 +249,6 @@ public class EchoServer1 extends AbstractServer {
         } catch (Exception ex) {
             serverUI().display("\nNo such command " + commandStr + "\nNo action taken.");
         }
-
     }//end createAndDoCommand
 
     /**

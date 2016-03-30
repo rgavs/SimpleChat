@@ -2,6 +2,7 @@ package SimpleChatServer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -29,6 +30,7 @@ public class Channel {
     /**
      * Blocks/exclusions in where to send messages
      */
+    private Map<ConnectionToClient, ConnectionToClient> blocks;
     
     public Channel(String channelName, AbstractServer thisServer, ArrayList<ConnectionToClient> myClients) {
         server = (EchoServer1) thisServer;
