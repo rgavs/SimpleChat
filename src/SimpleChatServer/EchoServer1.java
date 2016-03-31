@@ -70,16 +70,22 @@ public class EchoServer1 extends AbstractServer {
      * @param msg    The message received, an instance of a subclass of ServerMessageHandler
      * @param client The connection from which the message originated.
      */
+
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        if (msg.toString().contains("##")) {
-            String[] list = msg.toString().split("##");
+        handleMessageFromClient(msg.toString(), client);
+
+    }//end handleMessageFromClient
+
+    public void handleMessageFromClient(String msg, ConnectionToClient client) {
+        if (msg.contains("##")) {
+            String[] list = msg.split("##");
             String name = list[1];
             ConnectionToClient monitor = getConnection(name, getClientConnections());
             if (monitor != null) {
                 sendToMonitor(list[0], monitor);
             }
-        } else if (msg.toString().startsWith("#checkmonitor")) {
-            String[] list = msg.toString().split(" ");
+        } else if (msg.startsWith("#checkmonitor")) {
+            String[] list = msg.split(" ");
             ConnectionToClient monitor = getConnection(list[1], getClientConnections());
             if (monitor == null) {
                 try {
@@ -93,7 +99,7 @@ public class EchoServer1 extends AbstractServer {
                 }
             }
         } else {
-            ServerMessageHandler handler = (ServerMessageHandler) msg;
+            ServerStringMessageHandler handler = new ServerStringMessageHandler(msg);
             handler.setServer(this);
             handler.setConnectionToClient(client);
             handler.handleMessage();
@@ -190,47 +196,55 @@ public class EchoServer1 extends AbstractServer {
         }
     }//end handleMessageFromUser
 
-    public void sendToChannel(String message) {
-        String channelName = message.split(" ")[0];
-        if (message.indexOf(' ') < 0)
-            serverUI().display("Invalid input.");
-        else if (!channels.contains(channelName))
-            serverUI().display("No channel exists with the name: " + channelName);
-        else
-            channels.get(channels.indexOf(channelName)).sendToClients(message.substring(message.indexOf(' ')), "SERVER");
-    }
-
-    public void sendToChannel(String message, ConnectionToClient sender) { //send messages to channel from clients of channel
-        String channelName = message.split(" ")[0];
-        if (message.indexOf(' ') < 0) {
-            try {
-                sender.sendToClient("Invalid input. Please enter in the form: \'#<channelName> <message>\'");
-            } catch (IOException e) {
-                serverUI().display("IOException: " + e.getMessage());
-            }
-        } else if (getChannel(channelName) != null) {
-            String msg = message.substring(message.indexOf(' '));
-            Channel chan = getChannel(message.split(" ")[0]);
-            if (chan != null) {
-                if (!chan.isInChannel((String) sender.getInfo("id"))) {
-                    try {
-                        sender.sendToClient("SERVER MSG> You are not in that channel");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    chan.sendToClients(msg, (String) sender.getInfo("id"));
-                }
-            } else {
-                try {
-                    sender.sendToClient("SERVER MSG> No channel named \'" + chan.getChannelName() + "\' exists.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private void sendToChannel(String message) { //for sending server msg
+        String channelName;
+        int indexBlank = message.indexOf(' ');
+        if (indexBlank == -1) {
+            serverUI().display("Invalid input");
+        } else {
+            channelName = message.substring(0, indexBlank);
+            String msg = message.substring(indexBlank + 1);
+            Channel chl = getChannel(channelName);
+            if (chl == null)
+                serverUI().display("Channel with the name " + channelName + " does not exist.");
+            else {
+                chl.sendToClients(msg,"SERVER");
+                serverUI().display(message);
             }
         }
     }
 
+    public void sendToChannel(String message, ConnectionToClient sender) {
+        String channelName;
+        int indexBlank = message.indexOf(' ');
+        if (indexBlank == -1) {
+            try {
+                sender.sendToClient("Invalid input");
+            } catch (IOException e) {
+            }
+        } else {
+            channelName = message.substring(0, indexBlank);
+            String msg = message.substring(indexBlank + 1);
+            Channel chl = getChannel(channelName);
+            if (chl != null && chl.isInChannel((String) sender.getInfo("id")))
+                sendToChannelClients(msg, channelName, (String) sender.getInfo("id"));
+            else
+                try {
+                    sender.sendToClient("SERVER MSG> You are not in that channel");
+                } catch (IOException e) {
+                }
+        }
+    }
+
+    private void sendToChannelClients(Object msg, String channel, String senderID) {
+        Channel chl = getChannel(channel);
+        if (chl == null) {
+            serverUI().display("Channel with the name " + channel + " does not exist.");
+        } else {
+            chl.sendToClients(msg, senderID);
+        }
+
+    }
 
     public void createAndDoCommand(String message) {
         String commandStr;
@@ -249,6 +263,7 @@ public class EchoServer1 extends AbstractServer {
         } catch (Exception ex) {
             serverUI().display("\nNo such command " + commandStr + "\nNo action taken.");
         }
+
     }//end createAndDoCommand
 
     /**
@@ -284,7 +299,7 @@ public class EchoServer1 extends AbstractServer {
     }//end clientException
 
     protected synchronized void clientConnected(ConnectionToClient client) {
-        sendToAllClients("SERVER MSG> A client has connected.");
+        //sendToAllClients("SERVER MSG> A client has connected.");
     }//end clientConnected
 
     protected synchronized void clientDisconnected(ConnectionToClient client) {

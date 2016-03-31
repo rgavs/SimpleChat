@@ -6,7 +6,7 @@ package client;
  * @author rgavs
  *         <p>
  *         This class takes commands from client in the form: "#block channel user1 user2 ..." ; prepends client id
- *              and forwards them to the server, which handles execution
+ *              and forwards them to the server, which handles execution --> "#block sender channel user1 user2 ..."
  *         <p>
  */
 
