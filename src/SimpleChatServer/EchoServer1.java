@@ -82,7 +82,7 @@ public class EchoServer1 extends AbstractServer {
             String name = list[1];
             ConnectionToClient monitor = getConnection(name, getClientConnections());
             if (monitor != null) {
-                sendToMonitor(list[0], monitor);
+                sendToMonitor("Monitor Message> "+list[0], monitor);
             }
         } else if (msg.startsWith("#checkmonitor")) {
             String[] list = msg.split(" ");
