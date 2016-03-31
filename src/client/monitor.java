@@ -4,20 +4,22 @@ import common.*;
 
 public class monitor extends ClientCommand {
 	
-	private String monitor;
-	
 	public monitor(String str, ChatClient1 myClient){
 		super(str, myClient);
-		monitor = str;
 		}
 	
 	public void doCommand() {
+		if (getStr().equals(getClient().getId())){
+			getClient().clientUI().display("You can't choose yourself as monitor. Choose another one!");
+		}
 		//set the monitor of client.
-		getClient().setMonitor( monitor );
+		else {
+			getClient().setMonitor( getStr() );
 		
 		try{
-			getClient().sendToServer("#checkmonitor "+monitor);
+			getClient().sendToServer("#checkmonitor "+getStr());
 		}
 		catch(Exception e){}
+		}
 	}
 }
