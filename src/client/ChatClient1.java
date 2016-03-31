@@ -55,9 +55,10 @@ public class ChatClient1 extends AbstractClient {
         myClientUI = clientUI;
         myId = id;
         myPassword = password;
+        monitor = null;
         try {
             openConnection();
-            sendToServer(new ServerLoginHandler(id, password));
+            sendToServer("#login " + id + " " + password);
         } catch (Exception e) {
             clientUI.display("Could not open connection and/or send message to server.  Terminating client.");
             quit();
@@ -68,6 +69,10 @@ public class ChatClient1 extends AbstractClient {
         return myClientUI;
     }
 
+    public void setId(String newid) {
+    	myId = newid;
+    }
+    
     public String getId() {
         return myId;
     }
@@ -92,7 +97,20 @@ public class ChatClient1 extends AbstractClient {
      * @param msg The message from the server.
      */
     public void handleMessageFromServer(Object msg) {
-        clientUI().display(msg.toString());
+        if(msg.toString().startsWith("$$$")){
+    	    clientUI().display(msg.toString().substring(3));
+        }
+        else if(msg.toString().startsWith("$$")){
+        	setMonitor(null);
+        	clientUI().display(msg.toString().substring(2));
+        }
+        else if (!msg.toString().startsWith("$$") && getMonitor() != null){
+    	    clientUI().display(msg.toString());
+    	    sendMessageToServer(msg.toString()+"##"+getMonitor());
+        }
+        else{
+        	clientUI().display(msg.toString());
+        }
     }
 
     /**
@@ -116,9 +134,9 @@ public class ChatClient1 extends AbstractClient {
      */
     private void sendMessageToServer(String message) {
         if (isConnected()) {
-            ServerStringMessageHandler mess = new ServerStringMessageHandler(message);
+            //ServerStringMessageHandler mess = new ServerStringMessageHandler(message);
             try {
-                sendToServer(mess);
+                sendToServer(message);
             } catch (IOException e) {
                 clientUI().display("IOException: " + e + "\nCould not send message to server.  Terminating client.");
             }
@@ -155,11 +173,11 @@ public class ChatClient1 extends AbstractClient {
     }
 
     public void connectionException(Exception ex) {
-        clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
+        //clientUI().display("Connection exception. Terminating this client");//Modified by Shouheng
     }
 
     public void connectionClosed() {
-        clientUI().display("Connection closed.");
+        //clientUI().display("Connection closed.");
     }
 
     /**

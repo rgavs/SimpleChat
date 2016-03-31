@@ -5,7 +5,6 @@ import java.io.IOException;
 /**
  * User string given in format <code> </code>
  */
-// TODO implement method for client to get connected <code>Channel</code> name
 public class switchChannels extends ClientCommand {
 
     public switchChannels(String str, ChatClient1 client) {

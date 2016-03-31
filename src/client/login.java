@@ -32,11 +32,14 @@ public class login extends NotConnectedClientCommand {
             getClient().clientUI().display("Incorrect username or password.");
             return;
         }
+        
+        getClient().setId(username);
 
         //check if password consists of blanks only
         try {
             getClient().openConnection();
-            getClient().sendToServer(new ServerLoginHandler(getClient().getId(), getClient().getPassword()));
+            getClient().sendToServer("#login " + username + " " + password);
+             
         } catch (IOException ex) {
             getClient().clientUI().display("Connection to " + getClient().getHost() + " failed.");
         }
