@@ -1,9 +1,10 @@
 package SimpleChatClient;
 
-import java.io.*;
+import client.ChatClient1;
+import common.ChatIF;
 
-import common.*;
-import client.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
  * This class constructs the UI for a chat client.  It implements the

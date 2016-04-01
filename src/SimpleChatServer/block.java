@@ -56,6 +56,5 @@ public class block extends ServerCommand {
             }
             chan.blocks.put(sender, ret);
         }
-        
     }
 }

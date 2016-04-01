@@ -10,7 +10,7 @@ public class switchChannels extends ClientCommand {
     public switchChannels(String str, ChatClient1 client) {
         super(str, client);
     }
-    
+
     @Override
     public void doCommand() {
         try {

@@ -1,9 +1,6 @@
 package SimpleChatServer;
 
-import java.io.*;
-
 import SimpleChatServer.*;
-import common.ServerMessageHandler;
 
 /**
  * This class handles a request from a client to login to the server.

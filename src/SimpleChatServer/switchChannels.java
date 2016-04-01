@@ -12,7 +12,7 @@ public class switchChannels extends ServerCommand {
         String[] args = getStr().split(" ");
         getServer().getChannel(args[1]).removeClient(args[0]);
         getServer().serverUI().display(args[0] + " left " + args[1] + "...");
-        getServer().getChannel(args[2]).addClient(args[0],getServer());
+        getServer().getChannel(args[2]).addClient(args[0]);
         getServer().serverUI().display(" and joined " + args[2]);
     }
 }

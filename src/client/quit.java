@@ -2,8 +2,6 @@ package client;
 
 import java.io.IOException;
 
-import common.ServerQuitHandler;
-
 /**
  * Implements client command to quit, after first closing any connection to the current host.
  *

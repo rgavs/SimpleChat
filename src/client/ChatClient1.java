@@ -4,10 +4,10 @@
 
 package client;
 
-import ocsf.client.*;
-import common.*;
+import common.ChatIF;
+import ocsf.client.AbstractClient;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -70,9 +70,9 @@ public class ChatClient1 extends AbstractClient {
     }
 
     public void setId(String newid) {
-    	myId = newid;
+        myId = newid;
     }
-    
+
     public String getId() {
         return myId;
     }
@@ -97,19 +97,16 @@ public class ChatClient1 extends AbstractClient {
      * @param msg The message from the server.
      */
     public void handleMessageFromServer(Object msg) {
-        if(msg.toString().startsWith("$$$")){
-    	    clientUI().display(msg.toString().substring(3));
-        }
-        else if(msg.toString().startsWith("$$")){
-        	setMonitor(null);
-        	clientUI().display(msg.toString().substring(2));
-        }
-        else if (!msg.toString().startsWith("$$") && getMonitor() != null){
-    	    clientUI().display(msg.toString());
-    	    sendMessageToServer(msg.toString()+"##"+getMonitor());
-        }
-        else{
-        	clientUI().display(msg.toString());
+        if (msg.toString().startsWith("$$$")) {
+            clientUI().display(msg.toString().substring(3));
+        } else if (msg.toString().startsWith("$$")) {
+            setMonitor(null);
+            clientUI().display(msg.toString().substring(2));
+        } else if (!msg.toString().startsWith("$$") && getMonitor() != null) {
+            clientUI().display(msg.toString());
+            sendMessageToServer(msg.toString() + "##" + getMonitor());
+        } else {
+            clientUI().display(msg.toString());
         }
     }
 

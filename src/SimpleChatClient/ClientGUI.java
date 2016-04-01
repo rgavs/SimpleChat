@@ -40,15 +40,15 @@ package SimpleChatClient;
 
 /* TextDemo.java requires no other files. */
 
-import java.awt.*;
-import java.awt.event.*;
+import client.ChatClient1;
+import common.ChatIF;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import common.ChatIF;
-import client.ChatClient1;
-
-import static javax.swing.JFrame.*;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class ClientGUI extends JPanel implements ActionListener, ChatIF {
     private JTextField textField;

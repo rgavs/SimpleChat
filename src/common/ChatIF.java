@@ -12,11 +12,10 @@ package common;
  * @author Dr Timothy C. Lethbridge
  * @version July 2000
  */
-public interface ChatIF
-{
-  /**
-   * Method that when overriden is used to display objects onto
-   * a UI.
-   */
-  void display(String message);
+public interface ChatIF {
+    /**
+     * Method that when overriden is used to display objects onto
+     * a UI.
+     */
+    void display(String message);
 }

@@ -6,7 +6,7 @@ package client;
  * @author rgavs
  *         <p>
  *         This class takes commands from client in the form: "#block channel user1 user2 ..." ; prepends client id
- *              and forwards them to the server, which handles execution --> "#block sender channel user1 user2 ..."
+ *         and forwards them to the server, which handles execution --> "#block sender channel user1 user2 ..."
  *         <p>
  */
 
@@ -19,7 +19,7 @@ public class block extends ClientCommand {
     @Override
     public void doCommand() {
         try {
-            getClient().sendToServer("# "  + getClient().getId() + " " + getStr());
+            getClient().sendToServer("# " + getClient().getId() + " " + getStr());
         } catch (Exception e) {
             getClient().clientUI().display("Error attempting to reach server");
         }

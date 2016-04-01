@@ -1,7 +1,7 @@
 package common;
 
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * This class specifies requests from a client that should come only after login.

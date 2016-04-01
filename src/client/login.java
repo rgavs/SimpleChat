@@ -1,7 +1,5 @@
 package client;
 
-import common.*;
-
 import java.io.IOException;
 
 /**
@@ -15,12 +13,12 @@ import java.io.IOException;
  *          February 28 2016
  */
 public class login extends NotConnectedClientCommand {
-    
+
     public login(String str, ChatClient1 client) {
         super(str, client);
     }
 
-    public void doCmd() {    
+    public void doCmd() {
         if (!getStr().contains(" ")) {
             getClient().clientUI().display("Incorrect username or password.");
             return;
@@ -32,14 +30,14 @@ public class login extends NotConnectedClientCommand {
             getClient().clientUI().display("Incorrect username or password.");
             return;
         }
-        
+
         getClient().setId(username);
 
         //check if password consists of blanks only
         try {
             getClient().openConnection();
             getClient().sendToServer("#login " + username + " " + password);
-             
+
         } catch (IOException ex) {
             getClient().clientUI().display("Connection to " + getClient().getHost() + " failed.");
         }

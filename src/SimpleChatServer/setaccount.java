@@ -2,8 +2,6 @@ package SimpleChatServer;
 
 import java.io.*;
 
-import common.ServerMessageHandler;
-
 /**
  * Written by Shouheng Wu
  * February 28, 2016

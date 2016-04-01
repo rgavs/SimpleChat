@@ -3,7 +3,6 @@ package SimpleChatServer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import ocsf.server.AbstractServer;
@@ -54,7 +53,7 @@ class Channel {
         users.forEach(System.out::println);
         for (String usr : users) {
             for (ConnectionToClient cli : allClients) {
-                if (usr.equals(cli.getId())) {
+                if (usr.equals(cli.getInfo("id"))) {
                     clients.add(cli);
                     break;
                 }
@@ -80,7 +79,7 @@ class Channel {
         }
         System.out.println(client + " was unable to be found. Channel clients remain unchanged");
     }
-    
+
     /**
      * Parses the string from the user for the name of the channel and returns it.
      *
@@ -106,15 +105,15 @@ class Channel {
     }
 
     void removeClient(String user) {
-        for (ConnectionToClient cli : clients){
+        for (ConnectionToClient cli : clients) {
             if (cli.getInfo("id").equals(user)) {
                 clients.remove(cli);
             }
         }
     }
-    
-    ConnectionToClient getClient(String username){
-        for (ConnectionToClient usr : clients){
+
+    ConnectionToClient getClient(String username) {
+        for (ConnectionToClient usr : clients) {
             if (usr.getInfo("id").equals(username))
                 return usr;
         }
@@ -145,7 +144,7 @@ class Channel {
     //Send messages to all channel clients from one channel client
     void sendToClients(Object msg, String senderID) {
         for (ConnectionToClient client : clients) {
-            if (!blocks.containsKey(client)){
+            if (!blocks.containsKey(client)) {
                 try {
                     client.sendToClient(senderID + " " + channelName + "> " + msg);
                 } catch (Exception ex) {

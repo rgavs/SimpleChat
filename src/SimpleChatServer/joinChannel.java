@@ -15,7 +15,7 @@ public class joinChannel extends ServerCommand {
         Channel chl = getServer().getChannel(channelName);
         try {
 			System.out.println("ok");
-            chl.addClient(user, getServer());
+            chl.addClient(user);
         } catch (Exception e) {
             getServer().serverUI().display("Error in joining channel");
         }

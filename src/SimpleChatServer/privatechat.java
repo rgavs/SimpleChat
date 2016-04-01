@@ -2,8 +2,6 @@ package SimpleChatServer;
 
 import java.io.IOException;
 
-import ocsf.server.ConnectionToClient;
-
 public class privatechat extends ServerCommand {
 
     public privatechat(String str, EchoServer1 server) {
