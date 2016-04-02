@@ -11,8 +11,8 @@ package ocsf.server;
 *
 * Project Name: OCSF (Object Client-Server Framework)<p>
 *
-* @author Dr. Robert Lagani&egrave;re
-* @version Febuary 2001
+* @author Dr. Robert Laganiegravere
+* @version February 2001
 */
 class AdaptableServer extends AbstractServer
 {

@@ -8,14 +8,14 @@ package ocsf.common;
  * This interface implements the abstract method used to display
  * objects onto the client or server UIs.
  *
- * @author Dr Robert Lagani&egrave;re
+ * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
  * @version July 2000
  */
 public interface ChatIF
 {
   /**
-   * Method that when overriden is used to display objects onto
+   * Method that when overridden is used to display objects onto
    * a UI.
    */
   void display(String message);

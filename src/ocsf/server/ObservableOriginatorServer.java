@@ -9,14 +9,14 @@ package ocsf.server;
  * of <code> ObservableServer </code> that sends
  * <code> OriginatorMessage </code> instances to its observers.
  * This class should be used when the observers need to know
- * the orginator of the messages received. The originator
+ * the originator of the messages received. The originator
  * is null when the message sent concerns the server.
  * <p>
  * Project Name: OCSF (Object Client-Server Framework)<p>
  *
- * @author Dr Robert Lagani&egrave;re
+ * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
- * @author Fran&ccedil;ois B&eacute;langer
+ * @author Franccedilois Beacutelanger
  * @author Paul Holden
  * @version February 2001 (2.12)
  * @see ocsf.server.OriginatorMessage
@@ -37,7 +37,7 @@ public class ObservableOriginatorServer extends ObservableServer {
 
     /**
      * This method is used to handle messages coming from the client.
-     * Observers are notfied by receiveing an instance of OriginatorMessage
+     * Observers are notified by receiving an instance of OriginatorMessage
      * that contains both the message received and a reference to the
      * client who sent the message.
      *

@@ -1,8 +1,9 @@
 package SimpleChatServer;
 
-import java.io.*;
-
 import common.ChatIF;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class ServerConsole implements ChatIF {
 
@@ -54,4 +55,4 @@ public class ServerConsole implements ChatIF {
         sconsole.accept();  //Wait for console data
     }//end main()
 
- }
+}

@@ -246,7 +246,7 @@ public class ObservableServer extends Observable
    * connections because an exception has been raised.
    * This implementation
    * simply calls <code>stopListening</code>.
-   * This method may be overriden by subclasses.
+   * This method may be overridden by subclasses.
    *
    * @param exception the exception raised.
    */
@@ -259,7 +259,7 @@ public class ObservableServer extends Observable
 
   /**
    * This method is called when the server stops accepting
-   * connections for any reason.  This method may be overriden by 
+   * connections for any reason.  This method may be overridden by 
    * subclasses.
    */
   synchronized protected void serverStopped() 
@@ -270,7 +270,7 @@ public class ObservableServer extends Observable
 
   /**
    * This method is called when the server is closed.
-   * This method may be overriden by subclasses.
+   * This method may be overridden by subclasses.
    */
   synchronized protected void serverClosed() 
   {
@@ -290,10 +290,10 @@ public class ObservableServer extends Observable
 
   /**
    * This method is used to handle messages coming from the client.
-   * Observers are notfied by receiveing the transmitted message.
+   * Observers are notified by receiving the transmitted message.
    * Note that, in this implementation, the information concerning
    * the client that sent the message is lost.
-   * It can be overriden, but is still expected to call notifyObservers().
+   * It can be overridden, but is still expected to call notifyObservers().
    *
    * @param message The message received from the client.
    * @param client The connection to the client.

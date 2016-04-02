@@ -158,7 +158,7 @@ public abstract class AbstractClient implements Runnable {
 // ACCESSING METHODS ------------------------------------------------
 
     /**
-     * @return true if the client is connnected.
+     * @return true if the client is connected.
      */
     final public boolean isConnected() {
         return clientReader != null && clientReader.isAlive();
@@ -252,7 +252,7 @@ public abstract class AbstractClient implements Runnable {
     /**
      * Hook method called after the connection has been closed.
      * The default implementation does nothing. The method
-     * may be overriden by subclasses to perform special processing
+     * may be overridden by subclasses to perform special processing
      * such as cleaning up and terminating, or attempting to
      * reconnect.
      */

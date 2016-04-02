@@ -30,7 +30,7 @@
  */
 
 /**
- * Modified by Shouheng Wu to accomodate password feature, and to
+ * Modified by Shouheng Wu to accommodate password feature, and to
  * provide a default guest user that can be used to create new accounts
  * February 28, 2016
  */

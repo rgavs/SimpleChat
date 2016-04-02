@@ -170,7 +170,7 @@ public abstract class AbstractServer implements Runnable {
      * Sends a message to every client connected to the server.
      * This is merely a utility; a subclass may want to do some checks
      * before actually sending messages to all clients.  This method
-     * can be overriden, but if so it should still perform the general
+     * can be overridden, but if so it should still perform the general
      * function of sending to all clients, perhaps after some kind
      * of filtering is done. Any exception thrown while
      * sending the message to a particular client is ignored.
@@ -206,7 +206,7 @@ public abstract class AbstractServer implements Runnable {
      * concrete subclasses to implement messages that do something with
      * each connection (e.g. kill it, send a message to it etc.).
      * Remember that after this array is obtained, some clients
-     * in this migth disconnect. New clients can also connect,
+     * in this might disconnect. New clients can also connect,
      * these later will not appear in the array.
      *
      * @return an array of <code>Thread</code> containing
@@ -385,7 +385,7 @@ public abstract class AbstractServer implements Runnable {
     }
 
     /**
-     * Hook method called when the server is clased.
+     * Hook method called when the server is closed.
      * The default implementation does nothing. This method may be
      * overridden by subclasses. When the server is closed while still
      * listening, serverStopped() will also be called.

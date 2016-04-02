@@ -16,13 +16,13 @@ import java.util.Observable;
  * @author Dr Robert Laganiegravere
  * @author Dr Timothy C. Lethbridge
  * @author Franccedilois Beacutelange
- * @version Febuary 2001
+ * @version February 2001
  */
 public class ObservableClient extends Observable {
     // Class variables ***************************************************
 
     /**
-     * Indicates occurence of a connection exception.
+     * Indicates occurrence of a connection exception.
      */
     public static final String CONNECTION_EXCEPTION = "#OC:Connection error.";
 
@@ -128,7 +128,7 @@ public class ObservableClient extends Observable {
 
     /**
      * This method is used to handle messages from the server.  This method
-     * can be overriden but should always call notifyObservers().
+     * can be overridden but should always call notifyObservers().
      *
      * @param message The message received from the client.
      */

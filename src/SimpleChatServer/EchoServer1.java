@@ -1,10 +1,13 @@
 package SimpleChatServer;
 
-import java.io.*;
-import java.util.*;
+import common.ChatIF;
+import common.ServerStringMessageHandler;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 
-import ocsf.server.*;
-import common.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class modifies EchoServer to complete to begin Chat phase 2.

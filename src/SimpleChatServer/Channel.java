@@ -1,12 +1,12 @@
 package SimpleChatServer;
 
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
-import ocsf.server.AbstractServer;
-import ocsf.server.ConnectionToClient;
 
 
 class Channel {

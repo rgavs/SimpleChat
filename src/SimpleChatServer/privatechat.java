@@ -13,14 +13,13 @@ public class privatechat extends ServerCommand {
         final String message = getStr().split(" ")[1];
         final String sender = getStr().split(" ")[2];
 
-        
-            try {
-            	getServer().getConnection(sender, getServer().getClientConnections()).sendToClient("[privatechat to] " + receiver + "> " + message);
-             
-                getServer().getConnection(receiver, getServer().getClientConnections()).sendToClient("[privatechat from] " + sender + "> " + message);
-                }
-            catch (IOException e) {
-            } 
+
+        try {
+            getServer().getConnection(sender, getServer().getClientConnections()).sendToClient("[privatechat to] " + receiver + "> " + message);
+
+            getServer().getConnection(receiver, getServer().getClientConnections()).sendToClient("[privatechat from] " + sender + "> " + message);
+        } catch (IOException e) {
+        }
     }
 }
 

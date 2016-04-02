@@ -1,7 +1,5 @@
 package SimpleChatServer;
 
-import SimpleChatServer.*;
-
 /**
  * This class handles a request from a client to login to the server.
  *
@@ -9,12 +7,12 @@ import SimpleChatServer.*;
  * @version March 2016
  */
 public class clientquit extends ServerCommand {
-	public clientquit(String str, EchoServer1 server) {
-		super(str, server);
-	}
+    public clientquit(String str, EchoServer1 server) {
+        super(str, server);
+    }
 
-	public void doCommand() {
-		
-		System.out.println(getStr() + " has quited.");
-	}
+    public void doCommand() {
+
+        System.out.println(getStr() + " has quited.");
+    }
 }

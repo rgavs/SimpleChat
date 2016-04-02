@@ -20,8 +20,8 @@ public class ServerStringMessageHandler extends ServerMessageHandler//extends Se
      * sent to all clients.
      */
     public void handleMess() {
-        System.out.println((String) getClient().getInfo("id") + "> " + myString);
-        getServer().sendToAllClients((String) getClient().getInfo("id") + "> " + myString);
+        System.out.println(getClient().getInfo("id") + "> " + myString);
+        getServer().sendToAllClients(getClient().getInfo("id") + "> " + myString);
     }
 
     public void handleMessage() {
